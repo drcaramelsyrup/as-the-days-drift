@@ -1,0 +1,945 @@
+{
+    "0": {
+        "actions": {},
+        "comments": [],
+        "id": 0,
+        "responses": [
+            {
+                "target": 1,
+                "text": "Ugh... what happened?"
+            },
+            {
+                "target": 1,
+                "text": "What... where am I?"
+            },
+            {
+                "conditions": {
+                    "vardebug": "true"
+                },
+                "target": 45,
+                "text": "DEBUG - SKIP TO END"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Hey. Waking up? Good. You've been out for a while."
+    },
+    "1": {
+        "actions": {},
+        "comments": [],
+        "id": 1,
+        "responses": [
+            {
+                "target": 3,
+                "text": "Yeah... Wait. Why are there stitches on my head?"
+            },
+            {
+                "target": 2,
+                "text": "Who cares? I want to know what's going on."
+            },
+            {
+                "target": 3,
+                "text": "Ouch. Feels like I fell off the back of a truck."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "I'll explain everything in a minute. How are you feeling? Does your head hurt?"
+    },
+    "2": {
+        "actions": {},
+        "comments": [],
+        "id": 2,
+        "responses": [
+            {
+                "target": 4,
+                "text": "Wait... where are you? I can hear you, but I can't see you."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "I told you, I'll explain everything. Right now, I want to make sure you're okay. That was a nasty hit to the head you took back there."
+    },
+    "3": {
+        "actions": {},
+        "comments": [],
+        "id": 3,
+        "responses": [
+            {
+                "target": 4,
+                "text": "Wait... where are you? I can hear you, but I can't see you."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "You took a nasty hit to the head. I had to do some... field repairs. Looks like the stitches are holding up, at least. And it's good that you can talk."
+    },
+    "4": {
+        "actions": {},
+        "comments": [],
+        "id": 4,
+        "responses": [
+            {
+                "conditions": {
+                    "invlistener": "true"
+                },
+                "target": 5,
+                "text": "Found it!"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "I'm not actually on the shuttle with you. Look around. There should be a small orb somewhere nearby. Find it, and I'll tell you more about what's happening."
+    },
+    "5": {
+        "actions": {},
+        "comments": [],
+        "id": 5,
+        "responses": [
+            {
+                "target": 6,
+                "text": "Wait... did you say something about space?!"
+            },
+            {
+                "target": 7,
+                "text": "A special frequency that only I can hear? That doesn't make sense."
+            },
+            {
+                "target": 8,
+                "text": "Sounds useful. I guess I'll keep it for now."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Good. I designed that orb myself. I call it a Listener. It lets me communicate with you across great distances, even through space. And it operates on a special frequency that only you can hear, so others can't listen in on our conversations. Don't lose it, okay? Put it in your pocket or something."
+    },
+    "6": {
+        "actions": {},
+        "comments": [],
+        "id": 6,
+        "responses": [
+            {
+                "target": 10,
+                "text": "What are you talking about?"
+            },
+            {
+                "target": 10,
+                "text": "Remember what exactly? You're not making any sense."
+            },
+            {
+                "target": 10,
+                "text": "Why don't you just explain who you are already?"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Of course, don't you... Wait a minute. I knew something was off. You don't remember, do you?"
+    },
+    "7": {
+        "actions": {},
+        "comments": [],
+        "id": 7,
+        "responses": [
+            {
+                "target": 10,
+                "text": "What are you talking about?"
+            },
+            {
+                "target": 10,
+                "text": "Remember what exactly? You're not making any sense."
+            },
+            {
+                "target": 10,
+                "text": "Why don't you just explain who you are already?"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Don't be silly. It's a very common piece of technology... Wait a minute. I knew something was off. You don't remember, do you?"
+    },
+    "8": {
+        "actions": {},
+        "comments": [],
+        "id": 8,
+        "responses": [
+            {
+                "target": 9,
+                "text": "What talents are those?"
+            },
+            {
+                "target": 9,
+                "text": "Wow, you sound like a humble guy."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Well, of course it will be useful. I don't design things that aren't useful. At the risk of sounding overly boastful, that would be a waste of my talents."
+    },
+    "9": {
+        "actions": {},
+        "comments": [],
+        "id": 9,
+        "responses": [
+            {
+                "target": 10,
+                "text": "What are you talking about?"
+            },
+            {
+                "target": 10,
+                "text": "Remember what exactly? You're not making any sense."
+            },
+            {
+                "target": 10,
+                "text": "Why don't you just explain who you are already?"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Now, what could you possibly mean by that? It almost sounds like... I knew something was off. You don't remember, do you?"
+    },
+    "10": {
+        "actions": {},
+        "comments": [],
+        "id": 10,
+        "responses": [
+            {
+                "target": 11,
+                "text": "It's... ?... Well, of course it's..."
+            },
+            {
+                "target": 12,
+                "text": "No fair. I didn't know there was going to be a test."
+            },
+            {
+                "target": 13,
+                "text": "Crap. I... can't remember. This is bad, isn't it?"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Calm down! We're going to figure this out. Just answer one question for me. What's your name?"
+    },
+    "11": {
+        "actions": {},
+        "comments": [],
+        "id": 11,
+        "responses": [
+            {
+                "target": 13,
+                "text": "It's... uh... Sam? No, that's not right..."
+            },
+            {
+                "target": 14,
+                "text": "Fine. I can't remember. Happy?"
+            },
+            {
+                "target": 13,
+                "text": "Something is very, very wrong. I can't remember my own name!"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Take all the time you need. Seriously."
+    },
+    "12": {
+        "actions": {},
+        "comments": [],
+        "id": 12,
+        "responses": [
+            {
+                "target": 15,
+                "text": "In all seriousness, I have no idea."
+            },
+            {
+                "target": 13,
+                "text": "Ha, ha. Can I freak out now?"
+            },
+            {
+                "target": 16,
+                "text": "I guess I didn't study for this one. Can I have a hint?"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Well, at least you haven't lost your sense of humor. As... questionable as it may have been."
+    },
+    "13": {
+        "actions": {},
+        "comments": [],
+        "id": 13,
+        "responses": [
+            {
+                "target": 17,
+                "text": "I hope so! This is very disturbing."
+            },
+            {
+                "target": 18,
+                "text": "What do you mean, probably?!"
+            },
+            {
+                "target": 19,
+                "text": "Well, in the meantime, you'd better start filling me in."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Hey, it's going to be okay. I'm actually not surprised that this happened. Your memories will come back with time... probably."
+    },
+    "14": {
+        "actions": {},
+        "comments": [],
+        "id": 14,
+        "responses": [
+            {
+                "target": 17,
+                "text": "I hope so! This is very disturbing."
+            },
+            {
+                "target": 18,
+                "text": "What do you mean, probably?!"
+            },
+            {
+                "target": 19,
+                "text": "Well, in the meantime, you'd better start filling me in."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Well, no. Not really. But I wouldn't panic over this if I were you. Your memories will come back with time... probably."
+    },
+    "15": {
+        "actions": {},
+        "comments": [],
+        "id": 15,
+        "responses": [
+            {
+                "target": 17,
+                "text": "I hope so! This is very disturbing."
+            },
+            {
+                "target": 18,
+                "text": "What do you mean, probably?!"
+            },
+            {
+                "target": 19,
+                "text": "Well, in the meantime, you'd better start filling me in."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "That's okay. I'm actually not surprised that this happened. Your memories will come back with time... probably."
+    },
+    "16": {
+        "actions": {},
+        "comments": [],
+        "id": 16,
+        "responses": [
+            {
+                "target": 17,
+                "text": "I hope so! This is very disturbing."
+            },
+            {
+                "target": 18,
+                "text": "What do you mean, probably?!"
+            },
+            {
+                "target": 19,
+                "text": "Well, in the meantime, you'd better start filling me in."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "You must have been a model student. Anyway, I wouldn't be too worried if I were you. I'm actually not surprised that this happened. Your memories will come back with time... probably."
+    },
+    "17": {
+        "actions": {},
+        "comments": [],
+        "id": 17,
+        "responses": [
+            {
+                "target": 20,
+                "text": "Okay. I'll try to calm down. You can go ahead."
+            },
+            {
+                "target": 21,
+                "text": "But what if you tell me, and I just forget right away?"
+            },
+            {
+                "target": 22,
+                "text": "It would be a lot more comforting to have you here if I knew who you were."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Yeah, I can imagine. But I cannot stress enough that everything is going to be all right. I'll be with you every step of the way, as long as you keep that orb in your pocket. And for now, I can give you a brief rundown of the situation. Long enough for you to understand the specifics, and short enough so you can... uh... remember."
+    },
+    "18": {
+        "actions": {},
+        "comments": [],
+        "id": 18,
+        "responses": [
+            {
+                "target": 23,
+                "text": "For someone who isn't a neuroscientist, you sure seem confident about your diagnosis."
+            },
+            {
+                "target": 24,
+                "text": "Sorry for freaking out. I guess I should hope for the best."
+            },
+            {
+                "target": 25,
+                "text": "Great. So I'm not hurt or sick, I'm just a nutcase."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "I'm not a neuroscientist, so I can't say for certain. But your personality is still intact, and you remember how to breathe, talk, panic, and ask annoying questions, so I have a hunch that your amnesia isn't permanent. It might even be psychological rather than physiological."
+    },
+    "19": {
+        "actions": {},
+        "comments": [],
+        "id": 19,
+        "responses": [
+            {
+                "target": 20,
+                "text": "Just hit me. I can handle it."
+            },
+            {
+                "target": 26,
+                "text": "Why? Did something awful happen?"
+            },
+            {
+                "target": 27,
+                "text": "Wait. If I'm some kind of mass murderer, I'm not sure I want to know."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Yeah, I'm sure you're ready to hear some details on what went down. To be honest, I'm still trying to figure out how to tell you some things. This won't be easy."
+    },
+    "20": {
+        "actions": {},
+        "comments": [],
+        "id": 20,
+        "responses": [
+            {
+                "target": 28,
+                "text": "Just tell me already."
+            },
+            {
+                "target": 28,
+                "text": "Go on."
+            },
+            {
+                "target": 28,
+                "text": "(Wait)"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Okay. Well, I'll start with the worst news. It's actually helpful that you don't remember much; what I'm about to tell you won't sink in right away. But later, when you recover your memories... I hope you can forgive me for telling you like this."
+    },
+    "21": {
+        "actions": {},
+        "comments": [],
+        "id": 21,
+        "responses": [
+            {
+                "target": 23,
+                "text": "If you don't know anything about neuroscience, how can you be \"fairly certain?\""
+            },
+            {
+                "target": 24,
+                "text": "Okay. Sorry for freaking out."
+            },
+            {
+                "target": 22,
+                "text": "Well, if you're not a neuroscientist, who are you?"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Despite my limited knowledge of neuroscience, I'm fairly certain that's not going to happen."
+    },
+    "22": {
+        "actions": {},
+        "comments": [],
+        "id": 22,
+        "responses": [
+            {
+                "target": 20,
+                "text": "Fine. Go ahead."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Just be patient. First I'd like to explain how you got here, if you'll allow me."
+    },
+    "23": {
+        "actions": {},
+        "comments": [],
+        "id": 23,
+        "responses": [
+            {
+                "target": 20,
+                "text": "I'd love to hear it."
+            },
+            {
+                "target": 22,
+                "text": "I disagree. I think it's very important for me to know who you are."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "I'll forgive your lack of faith in my intelligence, since you don't actually have any idea who I am. Just trust me when I say that my identity is nowhere near the most important thing we need to discuss. It's time I explained what happened and how you got on this shuttle in the first place."
+    },
+    "24": {
+        "actions": {},
+        "comments": [],
+        "id": 24,
+        "responses": [
+            {
+                "target": 20,
+                "text": "Okay, go ahead."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "You don't need to apologize. I'm inclined to be sympathetic, given everything you've been through. Now, I think it's time that I explained how you got here."
+    },
+    "25": {
+        "actions": {},
+        "comments": [],
+        "id": 25,
+        "responses": [
+            {
+                "target": 20,
+                "text": "Go ahead then."
+            },
+            {
+                "target": 22,
+                "text": "I think I'd be a lot more understanding if I knew who you were."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "I think you'll be a lot more understanding of your situation once I explain what happened."
+    },
+    "26": {
+        "actions": {},
+        "comments": [],
+        "id": 26,
+        "responses": [
+            {
+                "target": 20,
+                "text": "I think so."
+            },
+            {
+                "target": 20,
+                "text": "Doesn't matter if I'm ready. I need to know what happened."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Well... you're not wrong. Are you sure you're ready to hear it?"
+    },
+    "27": {
+        "actions": {},
+        "comments": [],
+        "id": 27,
+        "responses": [
+            {
+                "target": 20,
+                "text": "I don't know, but I think you should tell me."
+            },
+            {
+                "target": 20,
+                "text": "Yes. I'm ready."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "No, nothing like that. In fact, I don't know very much about who you are. All I know is what you managed to tell me before... well, the thing that happened. Are you ready to hear about it?"
+    },
+    "28": {
+        "actions": {},
+        "comments": [],
+        "id": 28,
+        "responses": [
+            {
+                "target": 29,
+                "text": "What?"
+            },
+            {
+                "target": 29,
+                "text": "You've got to be kidding me."
+            },
+            {
+                "target": 29,
+                "text": "Oh no..."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "It's quite likely that everyone you knew is dead. Your family, friends... your entire homeworld, in fact. You're alive because I managed to save you, but... you might be the last of your kind."
+    },
+    "29": {
+        "actions": {},
+        "comments": [],
+        "id": 29,
+        "responses": [
+            {
+                "target": 30,
+                "text": "That's it? Seriously?"
+            },
+            {
+                "target": 31,
+                "text": "This must be some kind of sick prank."
+            },
+            {
+                "target": 32,
+                "text": "Well, considering I don't remember my family or friends, it's not actually that bad."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "This must be quite a shock. I'm sure it'll take some time to process. But I really have to move on."
+    },
+    "30": {
+        "actions": {},
+        "comments": [],
+        "id": 30,
+        "responses": [
+            {
+                "target": 33,
+                "text": "..."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Look, I'm sorry. There's nothing either of us can do about the past. We need to focus on the future. Your future, specifically."
+    },
+    "31": {
+        "actions": {},
+        "comments": [],
+        "id": 31,
+        "responses": [
+            {
+                "target": 33,
+                "text": "..."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "It's not a prank, I assure you. I've been called many things, but sadist isn't one of them."
+    },
+    "32": {
+        "actions": {},
+        "comments": [],
+        "id": 32,
+        "responses": [
+            {
+                "target": 33,
+                "text": "..."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "That's convenient, for now. It means we can save the anger and denial for when your memories come back. That leaves us time for more important things now."
+    },
+    "33": {
+        "actions": {},
+        "comments": [],
+        "id": 33,
+        "responses": [
+            {
+                "target": 34,
+                "text": "Why not?"
+            },
+            {
+                "target": 35,
+                "text": "What's Station Zero?"
+            },
+            {
+                "target": 36,
+                "text": "I'm a new species?"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Your home is gone, so I'm sending you to Station Zero. You should be able to find some answers there, along with people willing to help... provided they let you onto the station. They're usually friendly to new species, but your lack of memories might make you seem suspicious. Just tell them the truth, except about me. Don't mention me at all."
+    },
+    "34": {
+        "actions": {},
+        "comments": [],
+        "id": 34,
+        "responses": [
+            {
+                "target": 37,
+                "text": "Seems suspicious."
+            },
+            {
+                "target": 35,
+                "text": "What is Station Zero, anyway?"
+            },
+            {
+                "target": 36,
+                "text": "You said I'm a \"new species?\""
+            },
+            {
+                "conditions": {
+                    "seen": "34 35 36"
+                },
+                "target": 38,
+                "text": "I still have more questions, but I don't even know where to start."
+            }
+        ],
+        "showOnce": 1,
+        "speaker": "Mysterious Voice",
+        "text": "I'm not exactly welcome on the station. It's a long story and I'd rather not get into it now. You don't want to mention anything that will make it harder for you to get onto the station, so just leave me out of it. You can tell them that somebody rescued you, but you don't know who. I left a note in the shuttle cockpit that you can use to back up your story."
+    },
+    "35": {
+        "actions": {},
+        "comments": [],
+        "id": 35,
+        "responses": [
+            {
+                "target": 39,
+                "text": "What do you mean by information and connections?"
+            },
+            {
+                "target": 34,
+                "text": "Why aren't you coming with me?"
+            },
+            {
+                "target": 36,
+                "text": "You said I'm a \"new species?\""
+            },
+            {
+                "conditions": {
+                    "seen": "34 35 36"
+                },
+                "target": 38,
+                "text": "I still have more questions, but I don't even know where to start."
+            }
+        ],
+        "showOnce": 1,
+        "speaker": "Mysterious Voice",
+        "text": "It's a huge space station. All of the sentient species who've made contact with the rest of the galaxy have a delegation there. Some people call it the center of galactic civilization, but you can form your own opinion. There are two things it's good for: information and connections. You'll need both."
+    },
+    "36": {
+        "actions": {},
+        "comments": [],
+        "id": 36,
+        "responses": [
+            {
+                "target": 40,
+                "text": "What species lives on Station Zero?"
+            },
+            {
+                "target": 34,
+                "text": "Why aren't you coming with me?"
+            },
+            {
+                "target": 35,
+                "text": "What is Station Zero, anyway?"
+            },
+            {
+                "conditions": {
+                    "seen": "34 35 36"
+                },
+                "target": 38,
+                "text": "I still have more questions, but I don't even know where to start."
+            }
+        ],
+        "showOnce": 1,
+        "speaker": "Mysterious Voice",
+        "text": "Like I said, you're the last of your kind. The people on Station Zero won't have encountered your species before. As far as I could tell, your planet wasn't really a part of the galactic scene. Still mostly pre-spaceflight and everything. It's possible that they might have your planet on record as \"inhabited,\" but that's about it. Expect a large dose of scientific curiosity... and a lot of staring."
+    },
+    "37": {
+        "actions": {},
+        "comments": [],
+        "id": 37,
+        "responses": [
+            {
+                "target": 35,
+                "text": "What is Station Zero, anyway?"
+            },
+            {
+                "target": 36,
+                "text": "You said I'm a \"new species?\""
+            },
+            {
+                "conditions": {
+                    "seen": "34 35 36"
+                },
+                "target": 38,
+                "text": "I still have more questions, but I don't even know where to start."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Look, I'm just getting to know you. Forgive me if I don't want to spill my entire life story right away. I saved you, so I'm invested in your success; I'll stick with you while we figure things out. But we're not friends yet."
+    },
+    "38": {
+        "actions": {},
+        "comments": [],
+        "id": 38,
+        "responses": [
+            {
+                "target": 41,
+                "text": "Okay, okay. You're making me nervous."
+            },
+            {
+                "target": 42,
+                "text": "This is a lot to remember. I'm not good at remembering. Remember?"
+            },
+            {
+                "target": 43,
+                "text": "What am I supposed to do if they don't let me on the station?"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "There will be plenty of time later. You're getting close to the station now, so we need to make sure you're prepared. Remember, don't talk to me around other people. And don't mention me. The shuttle is on autopilot, so you don't need to worry about docking procedures. And I know you don't know what kind of food you're supposed to eat, but they'll have tests for that. Don't lose the Listener. Tell them it's a cultural artifact if you have to. And don't..."
+    },
+    "39": {
+        "actions": {},
+        "comments": [],
+        "id": 39,
+        "responses": [
+            {
+                "target": 34,
+                "text": "Why aren't you coming with me?"
+            },
+            {
+                "target": 36,
+                "text": "You said I'm a \"new species?\""
+            },
+            {
+                "conditions": {
+                    "seen": "34 35 36"
+                },
+                "target": 38,
+                "text": "I still have more questions, but I don't even know where to start."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Station Zero's original purpose was to be a central hub for all of the galaxy's sentient races to share information and research. It's... changed since those early days, but it's still the best place to find answers to big questions. As for connections... let's just say that everybody on the station is used to seeing new faces. You'll have a lot more success making friends there than you would on someone's planet."
+    },
+    "40": {
+        "actions": {},
+        "comments": [],
+        "id": 40,
+        "responses": [
+            {
+                "target": 34,
+                "text": "Why aren't you coming with me?"
+            },
+            {
+                "target": 35,
+                "text": "What is Station Zero, anyway?"
+            },
+            {
+                "conditions": {
+                    "seen": "34 35 36"
+                },
+                "target": 38,
+                "text": "I still have more questions, but I don't even know where to start."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "There's more than one. Over a dozen, in fact. You'll see. Regardless of everything else, it's a marvel of engineering. Any species can live there, regardless of their physiology. I'm not going to tell you much about the different races, though. It'll be more exciting... and believable... if first contact for you is actually first contact."
+    },
+    "41": {
+        "actions": {},
+        "comments": [],
+        "id": 41,
+        "responses": [
+            {
+                "target": 44,
+                "text": "That's comforting."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Just be yourself and tell the truth, except the things I told you to lie about. They'll love you. After running the necessary tests, of course."
+    },
+    "42": {
+        "actions": {},
+        "comments": [],
+        "id": 42,
+        "responses": [
+            {
+                "target": 44,
+                "text": "Thanks."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Well, I'll still be in your head as long as you keep the Listener nearby. If you seem to be forgetting anything egregiously important, I'll let you know."
+    },
+    "43": {
+        "actions": {},
+        "comments": [],
+        "id": 43,
+        "responses": [
+            {
+                "target": 44,
+                "text": "No pressure..."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "If it comes to that, I have other plans. But this is really the best one, so try to make a good first impression."
+    },
+    "44": {
+        "actions": {},
+        "comments": [],
+        "id": 44,
+        "responses": [
+            {
+                "target": 45,
+                "text": "I hope I don't need it."
+            },
+            {
+                "target": 45,
+                "text": "Good to know."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "I've auto-hailed the station and they accepted the docking request. The shuttle is about to start docking procedures. I'm going to scrub my authorization from the shuttle systems now, in case they poke around. But I'm leaving a backdoor for later, so try to keep ownership over the shuttle if you can. Anything goes sideways on the station, you'll still have a quick getaway."
+    },
+    "45": {
+        "actions": {},
+        "comments": [],
+        "id": 45,
+        "responses": [
+            {
+                "target": -1,
+                "text": "END"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Good luck with the welcome party. Remember, be on your best behavior. I'll talk to you again soon."
+    },
+    "46": {
+        "actions": {},
+        "comments": [],
+        "id": 46,
+        "responses": [
+            {
+                "target": -1,
+                "text": "END"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Found it!",
+        "text": "Double-click this passage to edit it."
+    },
+    "onEnd": "startConv:prologue02"
+}

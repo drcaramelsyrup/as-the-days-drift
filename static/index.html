@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>As the days drift</title>
+    <meta name="description" content="Roleplaying visual novel">
+    <style>
+      html { box-sizing: border-box; }
+      html, body { background: #000; overflow: hidden; -ms-touch-action: none; touch-action: none; }
+      * { margin: 0; padding: 0; }
+      *, *:before, *:after { box-sizing: inherit; }
+    </style>
+
+    <!-- From http://souzou.com.au/google-font-integration-with-phaser/ -->
+    <!-- For Google WebFonts -->
+    <script type="text/javascript">
+      WebFontConfig = {
+        google: { families: [ 'Open Sans', 'Cinzel Decorative' ] }
+      };
+      (function() {
+        var wf = document.createElement('script');
+        wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+      })();
+    </script>
+  </head>
+
+  <body>
+    <!-- build:js phaser.min.js -->
+    <script src="phaser.js"></script>
+    <!-- /build -->
+    <!-- NOTE: Add third-party library scripts here. -->
+    <!-- build:js game.min.js -->
+    <script src="game.js"></script>
+    <!-- /build -->
+    <script>window.app.init()</script>
+  </body>
+
+</html>

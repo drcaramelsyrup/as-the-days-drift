@@ -1,0 +1,48 @@
+{
+	"Mysterious Voice": {
+		"id": "Mysterious Voice",
+		"name": "Mysterious Voice",
+		"image": "mysterious-voice",
+		"avatar": "mysterious-voice",
+	},
+	"Gleaming Shoal": {
+		"id": "Gleaming Shoal",
+		"name": "Gleaming Shoal",
+		"image": "gleaming-shoal-npc",
+		"avatar": "gleaming-shoal",
+		"conv": "gleaming-shoal01"
+	},
+	"Unknown Alien": {
+		"id": "Gleaming Shoal",
+		"name": "Unknown Alien",
+		"image": "unknown-alien",
+		"avatar": "unknown-alien"
+	},
+	"Kismet": {
+		"id": "Kismet",
+		"name": "Kismet",
+		"image": "kismet",
+		"avatar": "kismet"
+	},
+	"Vesper": {
+		"id": "Vesper",
+		"name": "Vesper",
+		"image": "vesper-npc",
+		"avatar": "vesper",
+		"conv": "vesper01"
+	},
+	"Dr. Talvine Mesmer-Quiverly": {
+		"id": "Dr. Talvine Mesmer-Quiverly",
+		"name": "Dr. Talvine",
+		"image": "talvine-npc",
+		"avatar": "talvine",
+		"conv": "talvine01"
+	},
+	"Dr. Valken": {
+		"id": "Dr. Valken",
+		"name": "Dr. Valken",
+		"image": "valken-npc",
+		"avatar": "valken",
+		"conv": "valken01"
+	}
+}
