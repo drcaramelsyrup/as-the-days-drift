@@ -8,6 +8,7 @@
 import ConversationManager from '../objects/ConversationManager';
 import CustomActions from '../utils/CustomActions';
 import DialoguePanel from '../objects/DialoguePanel';
+import Player from '../objects/Player';
 
 export default class Game extends Phaser.State {
   preload() {
@@ -31,6 +32,8 @@ export default class Game extends Phaser.State {
     // dialogue window object
     this.dialoguePanel = new DialoguePanel(this.game, this.convoManager);
 
+    this.game.player = new Player();
+
     const {centerX: x, centerY: y} = this.world;
     this.begin('prologue01');
   }
@@ -49,12 +52,27 @@ export default class Game extends Phaser.State {
   updatePanel() {
     this.convoManager.takeActions();
     this.dialoguePanel.show();
-    this.dialoguePanel.display({
-      speaker: this.convoManager.getSpeaker(),
-      avatar: this.convoManager.getAvatar(),
-      text: this.convoManager.getCurrentText(),
+    // for all dialogue fragments, display
+    // let { fragments, responses } = this.convoManager.getDialogue();
+
+    // TODO: async
+    this.dialoguePanel.clean();
+    this.dialoguePanel.writeSpeakerText(this.convoManager.getSpeaker());
+
+    // const text = this.dialoguePanel.display({
+    //   speaker: this.convoManager.getSpeaker(),
+    //   body: this.convoManager.getCurrentText(),
+    //   // avatar: this.convoManager.getAvatar(),
+    // });
+
+    // await display finish
+    // display responses
+    this.dialoguePanel.displayResponses({
+      text: this.dialoguePanel.writeBodyText(this.convoManager.getCurrentText()),
+      responses: this.convoManager.getResponses(),
     });
-    // this.dialogPanel.displayText(this.convoManager.getCurrentText());
+
+    // then user acknowledgement will be conveyed through buttons
   }
 
 

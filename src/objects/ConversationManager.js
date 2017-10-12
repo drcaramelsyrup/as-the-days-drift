@@ -122,6 +122,10 @@ export default class ConversationManager {
     return npcs[this._conversation[this._idx]['speaker']]['avatar'];
   }
 
+  getActions() {
+    return this._conversation[this._idx]['actions'];
+  }
+
   takeActions() {
     if (this._conversation === null) {
       return;
@@ -193,7 +197,4 @@ export default class ConversationManager {
     return true;  // returns whether should refresh display.
   }
 
-  update() {
-    // TODO: Stub.
-  }
 }

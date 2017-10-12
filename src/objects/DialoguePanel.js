@@ -7,6 +7,8 @@
 
 import textstyles from '../../static/assets/textstyles.json';
 import UIElement from './UIElement';
+import LabelButton from './LabelButton';
+import Constants from '../utils/Constants';
 
 // TODO: define body text dimensions
 export default class DialoguePanel extends Phaser.Group {
@@ -36,37 +38,39 @@ export default class DialoguePanel extends Phaser.Group {
     this.onTextFinished = new Phaser.Signal(); // when the char-by-char display finishes
 
     // private members specifying margin and padding
-    const textOriginX = 96;
-    const textOriginY = 60;
-    const padding = 32;
+    const TOTAL_PADDING = Constants.DPANEL_PADDING_LEFT + Constants.DPANEL_PADDING_RIGHT;
 
     // window coordinates
-    const panelX = padding / 2;
+    const panelX = Constants.DPANEL_PADDING_LEFT;
     const panelY = game.height * 5 / 8;  /* 5/8 down */
 
-    const panelHeight = game.height * 3 / 8 /* 3/8 height */ - padding / 2;
-    const panelWidth = game.width - padding;
+    const panelHeight = game.height * 3 / 8 /* 3/8 height */ - Constants.DPANEL_PADDING_BOTTOM;
+    const panelWidth = game.width - TOTAL_PADDING;
 
     // speaker avatar display
-    this.avatar = new UIElement(
+    this.avatar = new UIElement(game,
       400, 100, 
       game.make.sprite(0,0,'invisible'),
       game, 400, 500);
 
-    this.panel = new UIElement(
+    this.panel = new UIElement(game,
       panelX, panelY,
       game.make.sprite(0,0,'dialogue-panel'),
       game, panelWidth, panelHeight
     );
 
+    console.log(this.panel); 
+
     // dialog text dimensions (private)
-    this._textHeight = panelHeight - textOriginY - 18;
+    // TODO: these dimensions aren't modular / don't make sense!
+    this._textHeight = panelHeight - Constants.DPANEL_TEXT_ORIGIN.y - 18;
     this._textWidth = panelWidth - 185;
 
     // actual window contents
-    const speakerX = padding + 64;
-    const speakerY = padding / 4;
-    this.speakerText = new UIElement(
+    // TODO: constant-ize these
+    const speakerX = TOTAL_PADDING + 64;
+    const speakerY = TOTAL_PADDING / 4;
+    this.speakerText = new UIElement(game,
       Math.round(speakerX), speakerY,
       game.make.text(0,0,'Speaker', textstyles['speaker']),
       this.panel
@@ -77,13 +81,14 @@ export default class DialoguePanel extends Phaser.Group {
      */
     // TODO: body text is monolithic Phaser.Text object
     const bodyStyle = textstyles['dialogueBody'];
-    bodyStyle.wordWrapWidth = this._dialogTextWidth;
+    bodyStyle.wordWrapWidth = panelWidth;
     let textContent = game.make.text(0, 0, 'placeholder text', bodyStyle);
     textContent.lineSpacing = 0;
-    this.bodyText = new UIElement(
-      textOriginX, textOriginY,
+    this.bodyText = new UIElement(game,
+      Math.round(Constants.DPANEL_TEXT_ORIGIN.x), Constants.DPANEL_TEXT_ORIGIN.y,
       textContent,
-      this.panel);
+      this.panel
+    );
 
     this.panel.alpha = 0.8;
 
@@ -124,7 +129,7 @@ export default class DialoguePanel extends Phaser.Group {
     }
     this.buttons = [];
 
-    this.bodyText.y = this._textOriginY;
+    // this.bodyText.y = this._textOriginY;
     // this.dialogText.displayObject.inputEnabled = false;
     // this.dialogText.displayObject.events.onInputOver.removeAll();
     // this.dialogText.displayObject.events.onInputOut.removeAll();
@@ -152,37 +157,15 @@ export default class DialoguePanel extends Phaser.Group {
     this.panel.visible = true;
   }
 
-  // display(
-  //   displaysInstant = false /* by default, not set to display text instantly */
-  // ) {
-  //   this.clean();
-  //   if (this.convoFile && this.convoManager) {
-  //     this.takeActions();
-  //     this.displayAvatar();
-
-  //     // On finishing the dialog text display, display our responses
-  //     // Added before our actual display call in case we display instantly
-  //     // TODO: set this up with async await
-  //     // this._onDialogTextFinished.add(() => {
-  //     //   this.displayResponses();
-  //     //   this._onDialogTextFinished.removeAll();
-  //     // });
-  //     // this.displayText(displaysIns
-  //   }
-  // }
-
-  display(fragment) {
+  display({ speaker='No Speaker', body='No Body' }) {
     this.clean();
     // this.displayAvatar(fragment.avatar);
-    this.displayText({
-      speaker: fragment.speaker,
-      body: fragment.text,
-    });
+    this.displayText({ speaker, body });
   }
 
   displayText({ speaker, body }) {
-    this.speakerText.element.text = speaker;
-    this.bodyText.element.text = body;
+    this.writeSpeakerText(speaker);
+    return this.writeBodyText(body);
 
     // if (displaysInstant) {
     //   this.bodyText.element.text = fragment.body;
@@ -198,15 +181,66 @@ export default class DialoguePanel extends Phaser.Group {
 
   }
 
-
-  get textOrigin() {
-    return Phaser.Point(this._textOriginX, this._textOriginY);
-  }
-  set textOrigin(position) {
-    this._textOriginX = position.x;
-    this._textOriginY = position.y;
+  writeSpeakerText(speaker) {
+    this.speakerText.element.text = speaker;
+    return this.speakerText;
   }
 
+  writeBodyText(body) {
+    this.bodyText.element.text = body;
+    return this.bodyText;
+  }
+
+  displayResponses({ text, responses = [] }) {
+    const { x, y } = text;
+    const { height } = text.element;
+    console.log(text);
+    console.log({x, y, height});
+    
+    let textYEnd = y+height;
+    for (let response of responses) {
+      const { text, target } = response;
+      const params = [];
+      const labelButton = this.createButton(x, textYEnd, text, target, params);
+      textYEnd += labelButton.height;
+      // textYEnd += labelButton.children[0];
+    }
+  }
+
+  createButton(x = 0, y = 0, responseText = '', responseTarget = 0, responseParams = []) {
+    // display text
+    const buttonSidePadding = 32;
+    const buttonTextStyle = textstyles['choiceButton'];
+    buttonTextStyle.wordWrapWidth = this._textWidth - buttonSidePadding;
+    const buttonText = this._game.make.text(0, 0, responseText, buttonTextStyle);
+
+    let centerX = Math.round(this._textWidth / 2 - buttonText.width / 2);
+
+    // add to sized button
+    let choiceButton = this._game.make.button(0,0, 'dialogue-choice-button'); 
+    
+    this.panel.add(new UIElement(this._game, x, y, choiceButton, null, this._textWidth, buttonText.height))
+      .add(new UIElement(this._game, centerX, 0, buttonText, null));
+
+    // end of conversation. action deletes window
+    if (responseTarget < 0) {
+      choiceButton.events.onInputUp.add(() => {
+        this.hide();
+        this.convoManager.endConversation();  // take any actions that trigger when this conversation ends
+      });
+    }
+
+    choiceButton.events.onInputUp.add(() => {
+      this._game.sound.play('tap');
+      const shouldRefresh = this.convoManager.advanceToTarget(
+        responseTarget, responseParams);
+      // if (shouldRefresh)
+        // this.display();
+    });
+
+    return choiceButton;
+
+  }
 
 //   displayResponses() {
 //     // start rendering buttons at the bottom of dialogue
@@ -249,47 +283,6 @@ export default class DialoguePanel extends Phaser.Group {
 //     this._buttonsY.push(this.nextButtonY);
 //   }
 
-//   addChoiceButton(x, y, responseTextField, responseTarget, responseParams = []) {
-//     // display text
-//     const buttonSidePadding = 32;
-//     const buttonTextStyle = textstyles['choiceButton'];
-//     buttonTextStyle.wordWrapWidth = this._dialogTextWidth - buttonSidePadding;
-//     const responseText = this._game.make.text(0, 0, responseTextField, buttonTextStyle);
-//     const buttonText = new SlickUI.Element.DisplayObject(
-//       Math.round(this._dialogTextWidth / 2 - responseText.width / 2),0, /* center text */
-//       responseText);
-
-//     // add to sized button
-//     let choiceButton;
-//     this.dialogPanel.add(choiceButton = new SlickUI.Element.DisplayObject(
-//       x, y,
-//       this._game.make.button(0,0, 'dialogue-choice-button'),
-//       this.dialogWidth, responseText.height));
-//     choiceButton.add(buttonText);
-//     choiceButton.sprite.width = this._dialogTextWidth;
-//     choiceButton.sprite.height = responseText.height;
-
-//     // end of conversation. action deletes window
-//     if (responseTarget < 0) {
-//       choiceButton.events.onInputUp.add(() => {
-//         this.hide();
-//         this.convoManager.endConversation();  // take any actions that trigger when this conversation ends
-//       });
-//     }
-
-//     choiceButton.events.onInputUp.add(() => {
-//       this._game.sound.play('tap');
-//       const shouldRefresh = this.convoManager.advanceToTarget(
-//         this.responseTarget, responseParams);
-//       if (shouldRefresh)
-//         this.display();
-//     });
-//     // add mask
-//     choiceButton.sprite.mask = this._scrollMask;
-//     buttonText.displayObject.mask = this._scrollMask;
-
-//     return choiceButton;
-//   }
 
 
 //   hideAvatar() {

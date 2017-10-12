@@ -27,6 +27,10 @@ export default {
     key: 'dialogue-panel',
     type: 'image',
     url: 'ui/dialogue-panel.png'
+  }, {
+    key: 'dialogue-choice-button',
+    type: 'image',
+    url: 'ui/dialogue-choice-button.png'
   }],
 
   // -- Avatars.

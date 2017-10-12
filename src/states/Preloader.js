@@ -22,7 +22,6 @@ export default class Preloader extends Phaser.State {
     // Here is a good place to initialize plugins dependent of any game asset.
     // Don't forget to `import` them first. Example:
     //this.game.myPlugin = this.plugins.add(MyPlugin/*, ... parameters ... */);
-    // this.game.slickUI = this.game.plugins.add(Phaser.Plugin.SlickUI);
     this.state.start('MainMenu');
   }
 
