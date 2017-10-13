@@ -10,7 +10,6 @@ import UIElement from './UIElement';
 import LabelButton from './LabelButton';
 import Constants from '../utils/Constants';
 
-// TODO: define body text dimensions
 export default class DialoguePanel extends Phaser.Group {
   constructor(game, convoManager/*, ...args*/) {
     super(game/*, ...args*/);
