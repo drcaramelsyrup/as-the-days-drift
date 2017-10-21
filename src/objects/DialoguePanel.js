@@ -39,21 +39,15 @@ export default class DialoguePanel extends Phaser.Group {
     const TOTAL_PADDING = Constants.DPANEL_PADDING_LEFT + Constants.DPANEL_PADDING_RIGHT;
 
     // window coordinates
-    const panelX = Constants.DPANEL_PADDING_LEFT;
-    const panelY = game.height * 5 / 8;  /* 5/8 down */
+    const panelX = Constants.DPANEL_ORIGIN_X;
+    const panelY = Constants.DPANEL_ORIGIN_Y;  
 
-    const panelHeight = game.height * 3 / 8 /* 3/8 height */ - Constants.DPANEL_PADDING_BOTTOM;
-    const panelWidth = game.width - TOTAL_PADDING;
-
-    // speaker avatar display
-    this.avatar = new UIElement(game,
-      400, 100, 
-      game.make.sprite(0,0,'invisible'),
-      game, 400, 500);
+    const panelHeight = game.height * Constants.DPANEL_GAME_HEIGHT;
+    const panelWidth = game.width * Constants.DPANEL_GAME_WIDTH; 
 
     this.panel = new UIElement(game,
       panelX, panelY,
-      game.make.sprite(0,0,'dialogue-panel'),
+      game.make.sprite(0,0,'invisible'),
       game, panelWidth, panelHeight
     );
 
@@ -61,16 +55,6 @@ export default class DialoguePanel extends Phaser.Group {
     // TODO: these dimensions aren't modular / don't make sense!
     this._textHeight = panelHeight - Constants.DPANEL_TEXT_ORIGIN.y - 18;
     this._textWidth = panelWidth - 185;
-
-    // actual window contents
-    // TODO: constant-ize these
-    const speakerX = TOTAL_PADDING + 64;
-    const speakerY = TOTAL_PADDING / 4;
-    this.speakerText = new UIElement(game,
-      Math.round(speakerX), speakerY,
-      game.make.text(0,0,'Speaker', textstyles['speaker']),
-      this.panel
-    );
 
     /**
      * Text styles
@@ -94,8 +78,6 @@ export default class DialoguePanel extends Phaser.Group {
     // for removing player choice buttons
     this.buttons = [];
     this.buttonTweens = [];
-    //for keeping track of whether the avatar needs to be updated (performance intensive)
-    this.avatarName = 'invisible';
 
     // will track the conversation file, so that save checkpoints will
     // go to the correct area in the conversation
@@ -153,14 +135,13 @@ export default class DialoguePanel extends Phaser.Group {
     this.panel.visible = true;
   }
 
-  display({ speaker='No Speaker', body='No Body' }) {
+  display({ body='No Body' }) {
     this.clean();
     // this.displayAvatar(fragment.avatar);
-    this.displayText({ speaker, body });
+    this.displayText({ body });
   }
 
-  displayText({ speaker, body }) {
-    this.writeSpeakerText(speaker);
+  displayText({ body }) {
     return this.writeBodyText(body);
 
     // if (displaysInstant) {
@@ -175,11 +156,6 @@ export default class DialoguePanel extends Phaser.Group {
     // // character-by-character display
     // this.displayCurrentLine();
 
-  }
-
-  writeSpeakerText(speaker) {
-    this.speakerText.element.text = speaker;
-    return this.speakerText;
   }
 
   writeBodyText(body) {

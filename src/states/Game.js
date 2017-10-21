@@ -26,8 +26,6 @@ export default class Game extends Phaser.State {
     let customActions = new CustomActions(this.game);
     // conversation manager
     this.convoManager = new ConversationManager(this.game, customActions);
-    // convoManager.idx = this.game.player.convoIdx;
-    // convoManager.shown = this.game.player.shownConvo;
 
     // dialogue window object
     this.dialoguePanel = new DialoguePanel(this.game, this.convoManager);
@@ -44,13 +42,6 @@ export default class Game extends Phaser.State {
 
     // TODO: async
     this.dialoguePanel.clean();
-    this.dialoguePanel.writeSpeakerText(this.convoManager.getSpeaker());
-
-    // const text = this.dialoguePanel.display({
-    //   speaker: this.convoManager.getSpeaker(),
-    //   body: this.convoManager.getCurrentText(),
-    //   // avatar: this.convoManager.getAvatar(),
-    // });
 
     // await display finish
     // display responses

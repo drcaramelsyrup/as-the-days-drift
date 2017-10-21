@@ -14,6 +14,9 @@ export default class Constants {
   static get DPANEL_PADDING_BOTTOM() { return 16; }
   static get DPANEL_TEXTPADDING_LEFT() { return 16; }
   static get DPANEL_TEXTPADDING_RIGHT() { return 16; }
-
+  static get DPANEL_ORIGIN_X() { return 16; }
+  static get DPANEL_ORIGIN_Y() { return 16; }
+  static get DPANEL_GAME_WIDTH() { return 0.8; }
+  static get DPANEL_GAME_HEIGHT() { return 0.75; }
   
 }
