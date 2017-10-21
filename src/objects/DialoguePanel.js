@@ -7,7 +7,6 @@
 
 import textstyles from '../../static/assets/textstyles.json';
 import UIElement from './UIElement';
-import LabelButton from './LabelButton';
 import Constants from '../utils/Constants';
 
 export default class DialoguePanel extends Phaser.Group {
@@ -57,8 +56,6 @@ export default class DialoguePanel extends Phaser.Group {
       game.make.sprite(0,0,'dialogue-panel'),
       game, panelWidth, panelHeight
     );
-
-    console.log(this.panel); 
 
     // dialog text dimensions (private)
     // TODO: these dimensions aren't modular / don't make sense!
@@ -193,8 +190,6 @@ export default class DialoguePanel extends Phaser.Group {
   displayResponses({ text, responses = [] }) {
     const { x, y } = text;
     const { height } = text.element;
-    console.log(text);
-    console.log({x, y, height});
     
     let textYEnd = y+height;
     for (let response of responses) {

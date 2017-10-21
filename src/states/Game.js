@@ -35,24 +35,16 @@ export default class Game extends Phaser.State {
     this.game.player = new Player();
 
     const {centerX: x, centerY: y} = this.world;
-    this.load('prologue01');
+    this.convoManager.loadJSONConversation('prologue01');
+
+    this.convoManager.takeActions();
     this.dialoguePanel.show();
-    this.updatePanel(this.convoManager, this.dialoguePanel);
-  }
-
-  load(convoManager = {}, jsonConvoKey = ''){
-    convoManager.loadJSONConversation(jsonConvo);
-  }
-
-  updatePanel(convoManager = {}, dialoguePanel = {}) {
-    convoManager.takeActions();
-    dialoguePanel.show();
     // for all dialogue fragments, display
     // let { fragments, responses } = this.convoManager.getDialogue();
 
     // TODO: async
-    dialoguePanel.clean();
-    dialoguePanel.writeSpeakerText(this.convoManager.getSpeaker());
+    this.dialoguePanel.clean();
+    this.dialoguePanel.writeSpeakerText(this.convoManager.getSpeaker());
 
     // const text = this.dialoguePanel.display({
     //   speaker: this.convoManager.getSpeaker(),
@@ -62,12 +54,14 @@ export default class Game extends Phaser.State {
 
     // await display finish
     // display responses
-    dialoguePanel.displayResponses({
-      text: dialoguePanel.writeBodyText(convoManager.getCurrentText()),
-      responses: convoManager.getResponses(),
+    this.dialoguePanel.displayResponses({
+      text: this.dialoguePanel.writeBodyText(
+        this.convoManager.getCurrentText()),
+      responses: this.convoManager.getResponses(),
     });
 
     // then user acknowledgement will be conveyed through buttons
+
   }
 
 

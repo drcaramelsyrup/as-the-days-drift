@@ -7,6 +7,7 @@
  * orientation handling etc. using this game state.
  */
 
+import 'babel-polyfill';
 import assets from '../assets';
 
 export default class Boot extends Phaser.State {

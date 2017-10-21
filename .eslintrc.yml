@@ -13,7 +13,7 @@ env:
   browser: true                       # Enable Browser global variables
 
 parserOptions:
-  ecmaVersion: 2016                   # Validate ECMAScript 2016 syntax
+  ecmaVersion: 2017                   # Validate ECMAScript 2016 syntax
   sourceType: module                  # Allow ECMAScript modules
 
 globals:
