@@ -45,5 +45,9 @@ export default {
     key: 'prologue01',
     type: 'json',
     url: 'conversations/prologue01.json'
+  }, {
+    key: 'bacon',
+    type: 'json',
+    url: 'conversations/bacon.json'
   }]
 };

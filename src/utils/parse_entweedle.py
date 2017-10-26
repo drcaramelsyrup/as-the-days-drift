@@ -37,12 +37,51 @@ def createConvNode(node, id):
 	node_responses = []
 	comments = []
 	actions = {}
+	cycles = {}
 	showOnce = 0;
+	cycle = 0;
 
 	# go through node line by line
 	for line in node[1:]:
 		if len(line) == 0:
 			continue
+		# if we are in a cycle
+		if cycle > 0:
+			if "(link:" in line and line.endswith("]"):
+				# this line determines a cycling text link
+				new_cycle = {}
+				# this is a condition
+				if line.startswith("(if:"):
+					conds = [s.strip() for s in re.split(r'and', line[:line.find(')')]) if len(s) > 0]
+					new_cycle['conditions'] = {}
+					for cond in conds:
+						cond_elements = [x for x in re.split(r'[\$ ]', cond) if len(x) > 0]
+						cond_var = cond_elements[1]
+						cond_type = cond_elements[2]
+						cond_val = cond_elements[3]
+						new_cycle['conditions'][cond_var] = {}
+						new_cycle['conditions'][cond_var]['type'] = cond_type
+						new_cycle['conditions'][cond_var]['val'] = cond_val
+				# this is a quality setting substring(s)
+				set_strs = [s for s in re.split(r'\(set:', line) if len(s) > 0]
+				new_cycle['actions'] = {}
+				for s in set_strs[1:]:
+					action = [x for x in re.split(r'[\$) ]', s) if len(x) > 0]
+					action_variable = action[0]
+					action_value = action[2]
+					new_cycle['actions'][action_variable] = action_value
+				# replace Twine macro determines our id
+				replace_str = [x for x in re.split('\"', line[line.find("(replace:") + len("(replace:"):]) if len(x) > 0]
+				cycle_id = replace_str[1]
+				# text enclosed in brackets
+				text_str = [x for x in re.split(r'[\[\]]', line[line.rfind('['):]) if len(x) > 0]
+				cycle_text = text_str[0]
+				new_cycle['text'] = cycle_text
+				if cycle_id not in cycles:
+					cycles[cycle_id] = []
+				# add created cycle object
+				cycles[cycle_id].append(new_cycle)
+				continue
 		# this is a response line
 		if line.startswith("[[") and line.endswith("]]"):
 			response = re.split('->', line[2:-2])
@@ -53,8 +92,16 @@ def createConvNode(node, id):
 		# this is a comment line
 		elif line.startswith("<!--"):
 			# check if this is a node that should only be shown once
-			if line[len("<!--"):len("<!--SHOW_ONCE")] == "SHOW_ONCE":
-				showOnce = 1;
+			comment_type = line[len("<!--"):-len("-->")]
+			if comment_type == "SHOW_ONCE":
+				showOnce = 1
+			elif comment_type == "CYCLE":
+				# this is the start of a cycle
+				cycle = 1
+				continue
+			elif comment_type == "END_CYCLE":
+				cycle = 0
+				continue
 			else:
 				comments.append(line)
 		# this line sets a variable
@@ -101,7 +148,8 @@ def createConvNode(node, id):
 		'responses': node_responses,
 		'actions': actions,
 		'speaker': speaker,
-		'showOnce': showOnce
+		'showOnce': showOnce,
+		'cycles': cycles
 	}
 
 conv_dict['start'] = createConvNode(conv_nodes[0], 0)	# this is the NPC greeting and conversation root

@@ -1,0 +1,49 @@
+{
+    "0": {
+        "actions": {},
+        "comments": [],
+        "id": 0,
+        "responses": [
+            {
+                "target": 1,
+                "text": "Ugh... what happened?"
+            },
+            {
+                "target": 1,
+                "text": "What... where am I?"
+            },
+            {
+                "conditions": {
+                    "vardebug": "true"
+                },
+                "target": 45,
+                "text": "DEBUG - SKIP TO END"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "Spicy jalapeno bacon ipsum dolor amet sint culpa short ribs frankfurter, drumstick in t-bone et eu ground round. Dolore in spare ribs consequat ut porchetta frankfurter shoulder magna, sint eiusmod pork ham voluptate pariatur. Tenderloin sausage sunt minim short loin et. Laboris enim pig short loin ullamco flank veniam in excepteur."
+    },
+    "1": {
+        "actions": {},
+        "comments": [],
+        "id": 1,
+        "responses": [
+            {
+                "target": 3,
+                "text": "Yeah... Wait. Why are there stitches on my head?"
+            },
+            {
+                "target": 2,
+                "text": "Who cares? I want to know what's going on."
+            },
+            {
+                "target": 3,
+                "text": "Ouch. Feels like I fell off the back of a truck."
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Mysterious Voice",
+        "text": "I'll explain everything in a minute. How are you feeling? Does your head hurt?"
+    }
+}

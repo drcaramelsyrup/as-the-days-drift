@@ -1,0 +1,59 @@
+{
+    "0": {
+        "actions": {},
+        "comments": [],
+        "cycles": {
+            "_cycle_subject": [
+                {
+                    "actions": {
+                        "career": "engineer"
+                    },
+                    "text": "precalculus, which was a problem since he wanted to be a civil engineer. You told him at this rate he'd only be building the sort of bridges that'd be in the front page of the papers, for all the wrong reasons."
+                },
+                {
+                    "actions": {
+                        "career": "journalist"
+                    },
+                    "text": "English lit, which was a problem for his budding interest in journalism."
+                },
+                {
+                    "actions": {
+                        "career": "biologist"
+                    },
+                    "text": "chemistry, which was a problem for an aspiring biologist."
+                }
+            ],
+            "_cycle_workstyle": [
+                {
+                    "actions": {
+                        "passive": "1",
+                        "prospective": "2"
+                    },
+                    "text": "He'd still forget his homework at your house, a collection of unintelligible scribbles, and then forget to pick it up the next day."
+                },
+                {
+                    "actions": {
+                        "resolute": "2"
+                    },
+                    "conditions": {
+                        "neuroticism": {
+                            "type": ">",
+                            "val": "5"
+                        }
+                    },
+                    "text": "Oftentimes he'd force himself to write in it. When that didn't work, he'd tear out pages and stick them to his doorway. Each time you came over to his place, he'd mutter a barely audible apology and quickly rip off the old collage of papers."
+                }
+            ]
+        },
+        "id": 0,
+        "responses": [
+            {
+                "target": -1,
+                "text": "END"
+            }
+        ],
+        "showOnce": 0,
+        "speaker": "Narrator",
+        "text": "He was having trouble in _cycle_subject. You remember you bought him an organizer as a sort of light intervention. _cycle_workstyle."
+    }
+}

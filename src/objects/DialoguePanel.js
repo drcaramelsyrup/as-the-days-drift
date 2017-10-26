@@ -60,15 +60,15 @@ export default class DialoguePanel extends Phaser.Group {
      * Text styles
      */
     // TODO: body text is monolithic Phaser.Text object
-    const bodyStyle = textstyles['dialogueBody'];
-    bodyStyle.wordWrapWidth = panelWidth;
-    let textContent = game.make.text(0, 0, 'placeholder text', bodyStyle);
-    textContent.lineSpacing = 0;
-    this.bodyText = new UIElement(game,
-      Math.round(Constants.DPANEL_TEXT_ORIGIN.x), Constants.DPANEL_TEXT_ORIGIN.y,
-      textContent,
-      this.panel
-    );
+    // const bodyStyle = textstyles['dialogueBody'];
+    // bodyStyle.wordWrapWidth = panelWidth;
+    // let textContent = game.make.text(0, 0, '', bodyStyle);
+    // textContent.lineSpacing = 0;
+    // this.bodyText = new UIElement(game,
+    //   Math.round(Constants.DPANEL_TEXT_ORIGIN.x), Constants.DPANEL_TEXT_ORIGIN.y,
+    //   textContent,
+    //   /*this.panel*/null
+    // );
 
     this.panel.alpha = 0.8;
 
@@ -135,33 +135,43 @@ export default class DialoguePanel extends Phaser.Group {
     this.panel.visible = true;
   }
 
-  display({ body='No Body' }) {
-    this.clean();
-    // this.displayAvatar(fragment.avatar);
-    this.displayText({ body });
+  // display({ body='No Body' }) {
+  //   this.clean();
+  //   // this.displayAvatar(fragment.avatar);
+  //   this.displayText({ body });
+  // }
+
+  displayWrappables(wrappables = []) {
+    for (let i = 0; i < wrappables.length; i++) {
+      let wrappable = wrappables[i];
+      for (let j = 0; j < wrappable.textList.length; j++) {
+        this.panel.add(wrappable.textList[j]);
+      }
+    }
   }
 
-  displayText({ body }) {
-    return this.writeBodyText(body);
+  // displayText({ body }) {
 
-    // if (displaysInstant) {
-    //   this.bodyText.element.text = fragment.body;
-    //   if (this.charTimer != null) {
-    //     this._game.time.events.remove(this.charTimer);  // stop characters from rendering one by one, if they are currently rendering
-    //   }
-    //   this._onDialogTextFinished.dispatch();
-    //   return;
-    // }
+  //   return this.writeBodyText(body);
 
-    // // character-by-character display
-    // this.displayCurrentLine();
+  //   // if (displaysInstant) {
+  //   //   this.bodyText.element.text = fragment.body;
+  //   //   if (this.charTimer != null) {
+  //   //     this._game.time.events.remove(this.charTimer);  // stop characters from rendering one by one, if they are currently rendering
+  //   //   }
+  //   //   this._onDialogTextFinished.dispatch();
+  //   //   return;
+  //   // }
 
-  }
+  //   // // character-by-character display
+  //   // this.displayCurrentLine();
 
-  writeBodyText(body) {
-    this.bodyText.element.text = body;
-    return this.bodyText;
-  }
+  // }
+
+  // writeBodyText(body) {
+  //   this.bodyText.element.text = body;
+  //   return this.bodyText;
+  // }
 
   displayResponses({ text, responses = [] }) {
     const { x, y } = text;
