@@ -5,8 +5,6 @@
  * Handles loading JSON assets for conversation and managing conversation state
  */
 
-import npcs from '../../static/assets/conversations/npcs.json';
-
 // TODO: We should be able to inherit from this class to create
 // our own parsing symbols and grammar
 
@@ -43,10 +41,10 @@ export default class ConversationManager {
 
   getResponsesForNode(conversation = {}, index = 0) {
     const responses = conversation[index]['responses'];
-    return responses.filter(() => {
-      if (!('conditions' in responses[i]))
+    return responses.filter((response) => {
+      if (!('conditions' in response))
         return true;
-      const condStatement = responses[i]['conditions']
+      const condStatement = response['conditions'];
       for (const condition in condStatement) {
         const value = condStatement[condition];
         if (!this.checkCondition(this._game, condition, value)) {
@@ -198,7 +196,7 @@ export default class ConversationManager {
   // ^^ we need to store them /every time/ a cycling link changes to update the UI
 
   getCyclingLinkIds(conversation = {}, index = 0) {
-    return conversation['cycles'].keys();
+    return conversation[index]['cycles'].keys();
   }
 
   nextValidCycleLink(player = {}, conversation = {}, index = 0, id = '', startCycleIdx = 0) {
@@ -210,7 +208,7 @@ export default class ConversationManager {
     }
     for (let j = 0; j < startCycleIdx; j++) {
       if (this.checkCycleCondition(cycles[j], player))
-        return cycles[i];
+        return cycles[j];
     }
     return {}; 
   }
@@ -225,24 +223,24 @@ export default class ConversationManager {
         const playerVal = player.variables[variable];
         const val = conditions[variable]['val'];
         const type = conditions[variable]['type'];
-        const isFulfilled = false;
+        let isFulfilled = false;
         switch (type) {
-          case '>':
-            isFulfilled = playerVal > val;
-            break;
-          case '<':
-            isFulfilled = playerVal < val;
-            break;
-          case '>=':
-            isFulfilled = playerVal >= val;
-            break;
-          case '<=':
-            isFulfilled = playerVal <= val;
-            break;
-          case 'is':
-          case '=':
-          default:
-            isFulfilled = playerVal === val;
+        case '>':
+          isFulfilled = playerVal > val;
+          break;
+        case '<':
+          isFulfilled = playerVal < val;
+          break;
+        case '>=':
+          isFulfilled = playerVal >= val;
+          break;
+        case '<=':
+          isFulfilled = playerVal <= val;
+          break;
+        case 'is':
+        case '=':
+        default:
+          isFulfilled = playerVal === val;
         }
         if (isFulfilled)
           continue;
@@ -303,6 +301,15 @@ export default class ConversationManager {
       this.getCyclingLinkActionList(cyclingLinkMap, conversation, index));
 
     return this.mergeQualityMaps(qualities, condensedMap);
+  }
+
+  replaceTextWithCyclingLinks(text = '', cyclingLinkMap = {}, conversation = {}, index = 0) {
+    let newText = text;
+    for (const cycleId in cyclingLinkMap) {
+      const cycleIndex = cyclingLinkMap[cycleId];
+      newText = newText.replace(cycleId, conversation[index]['cycles'][cycleId][cycleIndex]);
+    }
+    return newText;
   }
 
   endConversation() {
