@@ -3,17 +3,18 @@
 * ====
 *
 * The player object class.
+* In ATDD, the Player should keep track of 
+* - Cole's qualities (variables)
+* - conversation idx
+* 
 */
 
 export default class Player {
   constructor() {
-    this.inventory = [];
-    this.memoryBank = [];
-    this.seenAreas = []; //areas seen to track what can go in area transition window
+    // Both qualities and conditionals will be lumped in here
     this.variables = {};
-    this.currentRoom = null;
+    // keep track of flashback state?
     this.convoIdx = 0;
-    this.shownConvo = [];
     this.convoFile = null;
 
   }
@@ -21,8 +22,6 @@ export default class Player {
   serialize(game) {
     const fields = [
       'inventory',
-      'memoryBank',
-      'seenAreas',
       'variables'
     ];
 
@@ -32,10 +31,7 @@ export default class Player {
       let field = fields[i];
       obj[field] = this[field];
     }
-    //since the room info contains all the objects in room, can I pop off there?
-    obj['currentRoom'] = game.room.area;
     obj['convoIdx'] = game.dialogueWindow.convoManager.idx;
-    obj['shownConvo'] = game.dialogueWindow.convoManager.shown;
     //since the convoFile is not stored in the game, we will just store it with the
     //player whenever a new file is started.
     //or we could store that also in the Dialogue manager??
