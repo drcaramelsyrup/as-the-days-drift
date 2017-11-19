@@ -43,11 +43,14 @@ export default class DialoguePanel extends Phaser.Group {
     const panelY = Constants.DPANEL_ORIGIN_Y;  
 
     const panelHeight = game.height * Constants.DPANEL_GAME_HEIGHT;
-    const panelWidth = game.width * Constants.DPANEL_GAME_WIDTH; 
+    const panelWidth = game.width * Constants.DPANEL_GAME_WIDTH;
+
+    const panelSprite = game.make.sprite(0,0,'invisible');
+    panelSprite.anchor = new Phaser.Point(0.5, 0.5);
 
     this.panel = new UIElement(game,
-      panelX, panelY,
-      game.make.sprite(0,0,'invisible'),
+      game.height/2 - panelHeight/2, game.width/2 - panelWidth/2,
+      panelSprite,
       game, panelWidth, panelHeight
     );
 

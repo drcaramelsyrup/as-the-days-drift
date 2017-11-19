@@ -55,45 +55,45 @@ export default class ConversationManager {
     });
   }
 
-  // getCurrentText() {
-  //   if (this._conversation === null) {
-  //     return '';
-  //   }
+  getCurrentText() {
+    if (this._conversation === null) {
+      return '';
+    }
 
-  //   return this._conversation[this._idx]['text'];
-  // }
+    return this._conversation[this._idx]['text'];
+  }
 
-  // getResponses() {
-  //   if (!this._conversation === null) {
-  //     return [''];
-  //   }
-  //   const responses = this._conversation[this._idx]['responses'];
-  //   const ret = [];
-  //   for (let i = 0; i < responses.length; i++) {
-  //     //check showOnce of target node
-  //     if (this.shown.indexOf(responses[i]['target']) > -1) {    // this node is marked "show once" and has already been shown
-  //       continue;
-  //     }
-  //     //check conditions on response
-  //     if ('conditions' in responses[i]) {
-  //       let conditionsNeeded = 0;
-  //       let conditionsMet = 0;
-  //       for (const condition in responses[i]['conditions']) {
-  //         if (this.checkCondition(this._game, condition, responses[i]['conditions'][condition])) {
-  //           conditionsMet++;
-  //         }
-  //         conditionsNeeded++;
-  //       }
-  //       if (conditionsMet >= conditionsNeeded) {
-  //         ret.push(responses[i]); //if all conditions are met, display response
-  //       }
-  //     } else {
-  //       ret.push(responses[i]);   //no conditions on this response, display it
-  //     }
-  //   }
+  getResponses() {
+    if (!this._conversation === null) {
+      return [''];
+    }
+    const responses = this._conversation[this._idx]['responses'];
+    const ret = [];
+    for (let i = 0; i < responses.length; i++) {
+      //check showOnce of target node
+      if (this.shown.indexOf(responses[i]['target']) > -1) {    // this node is marked "show once" and has already been shown
+        continue;
+      }
+      //check conditions on response
+      if ('conditions' in responses[i]) {
+        let conditionsNeeded = 0;
+        let conditionsMet = 0;
+        for (const condition in responses[i]['conditions']) {
+          if (this.checkCondition(this._game, condition, responses[i]['conditions'][condition])) {
+            conditionsMet++;
+          }
+          conditionsNeeded++;
+        }
+        if (conditionsMet >= conditionsNeeded) {
+          ret.push(responses[i]); //if all conditions are met, display response
+        }
+      } else {
+        ret.push(responses[i]);   //no conditions on this response, display it
+      }
+    }
 
-  //   return ret;
-  // }
+    return ret;
+  }
 
   checkCondition(game, condition, value) {
     if (condition.startsWith('var')) {
@@ -126,22 +126,6 @@ export default class ConversationManager {
     }
     return false;
   }
-
-  // getSpeaker() {
-  //   if (this._conversation === null) {
-  //     return [''];
-  //   }
-
-  //   return npcs[this._conversation[this._idx]['speaker']]['name'];
-  // }
-
-  // getAvatar() {
-  //   if (this._conversation === null) {
-  //     return [''];
-  //   }
-
-  //   return npcs[this._conversation[this._idx]['speaker']]['avatar'];
-  // }
 
   getActions() {
     return this._conversation[this._idx]['actions'];
@@ -305,11 +289,16 @@ export default class ConversationManager {
 
   replaceTextWithCyclingLinks(text = '', cyclingLinkMap = {}, conversation = {}, index = 0) {
     let newText = text;
+    let replacements = {};
     for (const cycleId in cyclingLinkMap) {
       const cycleIndex = cyclingLinkMap[cycleId];
-      newText = newText.replace(cycleId, conversation[index]['cycles'][cycleId][cycleIndex]);
+      const startIndex = text.indexOf(cycleId);
+      const phrase = conversation[index]['cycles'][cycleId][cycleIndex];
+      newText = newText.replace(cycleId, phrase);
+      // range: from start (key) to end (val)
+      replacements[startIndex] = phrase.length - 1;
     }
-    return newText;
+    return { 'text': newText, 'replaceIndices': replacements };
   }
 
   endConversation() {

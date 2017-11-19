@@ -15,6 +15,7 @@ export default class DynamicTextElement {
     this.start = new Phaser.Point(x,y);
     this.end = new Phaser.Point(0,0);
     this._game = game;
+    this.colorTimer = game.time.create(false /* no autodestroy */);
 
     this.generate(textString, style, this.start);
   }
@@ -54,6 +55,7 @@ export default class DynamicTextElement {
       this.textList.push(
         new UIElement(this._game, nextX, nextY,
           this._game.make.text(0,0,phrase,style), null));
+
       
       words = words.slice(idx+1);
       if (words.length > 0) {
@@ -66,6 +68,67 @@ export default class DynamicTextElement {
     let lastText = this.textList[this.textList.length - 1];
     this.end = new Phaser.Point(lastText.x + lastText.element.right, lastText.y);
 
+    if (this.textList.length <= 0)
+      return;
+
+    this.addClickEvent(() => {
+      this.textList.forEach((textElement) => {
+        textElement.element.addColor('red', 0);
+      });
+    });
+
+    const firstElement = this.textList[0].element;
+    const startColor = firstElement.colors[0] == null 
+      ? firstElement.style.fill : firstElement.colors[0];
+    const timesteps = 30;
+
+    const hoverInterp = (source, target) => {
+      this.colorTimer.stop(true /* clear events */);
+      let currentStep = 0;
+      this.colorTimer.loop(Phaser.Timer.HALF/timesteps, () => {
+        this.textList.forEach((textWrapper) => {
+          const element = textWrapper.element;
+          const rgbColor = Phaser.Color.valueToColor(
+            Phaser.Color.interpolateColor(
+              Phaser.Color.hexToRGB(source), 
+              Phaser.Color.hexToRGB(target), 
+              timesteps, currentStep
+            )
+          );
+          element.addColor(Phaser.Color.RGBtoString(
+            rgbColor.r, rgbColor.g, rgbColor.b), 0);
+        });
+        currentStep++;
+        if (currentStep > timesteps)
+          this.colorTimer.stop(true);
+      });
+      this.colorTimer.start();
+    };
+
+    this.addHoverEvent(() => {
+      // over
+      hoverInterp(startColor, '#ffff00');
+    }, () => {
+      // out
+      const currentColor = firstElement.colors[0] == null
+        ? firstElement.style.fill : firstElement.colors[0]; 
+      hoverInterp(currentColor, startColor);
+    });
+  }
+
+  addClickEvent(event) {
+    this.textList.forEach((textElement) => {
+      textElement.element.inputEnabled = true;
+      textElement.element.events.onInputDown.add(event);
+    });
+  }
+
+  addHoverEvent(overEvent, outEvent) {
+    this.textList.forEach((textElement) => {
+      textElement.element.inputEnabled = true;
+      textElement.element.events.onInputOver.add(overEvent);
+      textElement.element.events.onInputOut.add(outEvent);
+    });
   }
 
 

@@ -4,7 +4,8 @@
     "dist": "gulp dist",
     "lint": "gulp lint",
     "start": "gulp",
-    "test-dist": "gulp test-dist"
+    "test-dist": "gulp test-dist",
+    "flow": "flow"
   },
   "dependencies": {
     "chai": "^4.1.2",

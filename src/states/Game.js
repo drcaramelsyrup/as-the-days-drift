@@ -11,7 +11,7 @@ import DialoguePanel from '../objects/DialoguePanel';
 import Player from '../objects/Player';
 import textstyles from '../../static/assets/textstyles.json';
 import DynamicTextElement from '../objects/DynamicTextElement';
-import Constants from '../utils/Constants'
+import Constants from '../utils/Constants';
 
 export default class Game extends Phaser.State {
   preload() {
@@ -56,11 +56,23 @@ export default class Game extends Phaser.State {
         wrappables.push(newText);
       }
       return wrappables;
-    }
+    };
+
+    // const makeWrappables = (game, text, cyclingLinks) => {
+    //   let wrappables = [];
+    //   let start = new Phaser.Point(0,0);
+    //   let end = new Phaser.Point(0,0);
+    //   let textstyle = textstyles['dialogueBody'];
+    //   textstyle.wordWrapWidth = game.width * Constants.DPANEL_GAME_WIDTH;
+    //   for (let i = 0; i < textStrs.length; i++) {
+        
+    //   }
+    // }
 
 
     this.dialoguePanel.clean();
     this.dialoguePanel.displayWrappables(makeWrappables(this.game, this.convoManager.getCurrentText()));
+
 
     // for all dialogue fragments, display
     // let { fragments, responses } = this.convoManager.getDialogue();
