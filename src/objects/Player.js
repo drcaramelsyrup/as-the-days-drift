@@ -16,6 +16,8 @@ export default class Player {
     // keep track of flashback state?
     this.convoIdx = 0;
     this.convoFile = null;
+    // Cycling link map
+    this.cyclingLinks = {};
 
   }
 

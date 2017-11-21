@@ -33,45 +33,39 @@ export default class Game extends Phaser.State {
     // dialogue window object
     this.dialoguePanel = new DialoguePanel(this.game, this.convoManager);
 
-    this.game.player = new Player();
+    const player = new Player();
 
     const {centerX: x, centerY: y} = this.world;
-    this.convoManager.loadJSONConversation('bacon');
+    const conversation = this.convoManager.loadJSONConversation('output_cyclinglink');
+    player.cyclingLinks = this.convoManager.startCyclingLinkMap(this.game.player, conversation, 0);
 
     this.convoManager.takeActions();
     this.dialoguePanel.show();
 
-    const makeWrappables = (game, textBody) => {
-      let textStrs = textBody.split('.');
-      let wrappables = [];
+
+    const makeWrappables = (game, conversation, index, cyclingLinks) => {
+      const dynamicText = this.convoManager.getDynamicTextElements(conversation, index, cyclingLinks);
       let start = new Phaser.Point(0,0);
       let end = new Phaser.Point(0,0);
-      let textstyle = textstyles['dialogueBody'];
+      const textstyle = textstyles['dialogueBody'];
       textstyle.wordWrapWidth = game.width * Constants.DPANEL_GAME_WIDTH;
-      for (let i = 0; i < textStrs.length; i++) {
+      const wrappables = [];
+      dynamicText.elements.forEach((elem, idx) => {
         start = end;
-        let newText = new DynamicTextElement(
-          game, textStrs[i], textstyle, start.x, start.y);
+        const newText = new DynamicTextElement(
+          game, elem, textstyle, start.x, start.y, dynamicText.links.includes(idx)
+        );
         end = newText.end;
         wrappables.push(newText);
-      }
+      });
+
       return wrappables;
+
     };
 
-    // const makeWrappables = (game, text, cyclingLinks) => {
-    //   let wrappables = [];
-    //   let start = new Phaser.Point(0,0);
-    //   let end = new Phaser.Point(0,0);
-    //   let textstyle = textstyles['dialogueBody'];
-    //   textstyle.wordWrapWidth = game.width * Constants.DPANEL_GAME_WIDTH;
-    //   for (let i = 0; i < textStrs.length; i++) {
-        
-    //   }
-    // }
-
-
     this.dialoguePanel.clean();
-    this.dialoguePanel.displayWrappables(makeWrappables(this.game, this.convoManager.getCurrentText()));
+    this.dialoguePanel.displayWrappables(makeWrappables(
+      this.game, conversation, 0, player.cyclingLinks));
 
 
     // for all dialogue fragments, display

@@ -31,6 +31,7 @@ export default class ConversationManager {
 
     this._conversation = json;
     this._idx = 0;
+    return json;
     // the player object may want to initialize the start index of a conversation
   }
 
@@ -180,21 +181,34 @@ export default class ConversationManager {
   // ^^ we need to store them /every time/ a cycling link changes to update the UI
 
   getCyclingLinkIds(conversation = {}, index = 0) {
-    return conversation[index]['cycles'].keys();
+    return Object.keys(conversation[index]['cycles']);
   }
 
-  nextValidCycleLink(player = {}, conversation = {}, index = 0, id = '', startCycleIdx = 0) {
-    const cycles = conversation['cycles'][id];
+  startCyclingLinkMap(player = {}, conversation = {}, index = 0) {
+    const map = {};
+    this.getCyclingLinkIds(conversation, index).forEach((id) => {
+      map[id] = this.nextValidCycleLinkIndex(player, conversation, index, id);
+    });
+    return map;
+  }
+
+  nextValidCycleLinkIndex(player = {}, conversation = {}, index = 0, id = '', startCycleIdx = -1) {
+    const cycles = conversation[index]['cycles'][id];
     for (let i = startCycleIdx + 1; i < cycles.length; i++) {
       if (this.checkCycleCondition(cycles[i], player)) {
-        return cycles[i];
+        return i;
       }
     }
     for (let j = 0; j < startCycleIdx; j++) {
       if (this.checkCycleCondition(cycles[j], player))
-        return cycles[j];
+        return j;
     }
-    return {}; 
+    return -1;
+  }
+
+  nextValidCycleLink(player = {}, conversation = {}, index = 0, id = '', startCycleIdx = -1) {
+    const nextLinkIdx = this.nextValidCycleLinkIndex(player, conversation, index, id, startCycleIdx);
+    return nextLinkIdx < 0 ? {} : conversation[index]['cycles'][id][nextLinkIdx];
   }
 
   checkCycleCondition(cycle = {}, player = {}) {
@@ -287,18 +301,30 @@ export default class ConversationManager {
     return this.mergeQualityMaps(qualities, condensedMap);
   }
 
-  replaceTextWithCyclingLinks(text = '', cyclingLinkMap = {}, conversation = {}, index = 0) {
-    let newText = text;
-    let replacements = {};
-    for (const cycleId in cyclingLinkMap) {
+  getDynamicTextElements(conversation = {}, index = 0, cyclingLinkMap = {}) {
+    const elements = [];
+    const links = [];
+    const text = this.getTextForNode(conversation, index);
+    let textPos = 0;
+    Object.keys(cyclingLinkMap).forEach((cycleId) => {
+      elements.push(text.substr(textPos, text.indexOf(cycleId) - textPos));
+      textPos = text.indexOf(cycleId) + cycleId.length;
       const cycleIndex = cyclingLinkMap[cycleId];
-      const startIndex = text.indexOf(cycleId);
-      const phrase = conversation[index]['cycles'][cycleId][cycleIndex];
-      newText = newText.replace(cycleId, phrase);
-      // range: from start (key) to end (val)
-      replacements[startIndex] = phrase.length - 1;
-    }
-    return { 'text': newText, 'replaceIndices': replacements };
+      const phrase = conversation[index].cycles[cycleId][cycleIndex].text;
+      elements.push(phrase);
+      links.push(elements.length - 1);
+    });
+    if (textPos < text.length)
+      elements.push(text.substr(textPos));
+    return { 'elements': elements, 'links': links }
+  }
+
+  getCyclingLinkIds(conversation = {}, index = 0) {
+    return Object.keys(conversation[index].cycles);
+  }
+
+  getCyclingLinkText(conversation = {}, index = 0, linkId = '', linkIdx = 0) {
+    return conversation[index].cycles[linkId][linkIdx];
   }
 
   endConversation() {

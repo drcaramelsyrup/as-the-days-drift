@@ -49,5 +49,9 @@ export default {
     key: 'bacon',
     type: 'json',
     url: 'conversations/bacon.json'
+  }, {
+    key: 'output_cyclinglink',
+    type: 'json',
+    url: 'conversations/output_cyclinglink.json'
   }]
 };

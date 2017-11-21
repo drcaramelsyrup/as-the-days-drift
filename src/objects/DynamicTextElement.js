@@ -6,16 +6,18 @@
  */
 
 import UIElement from './UIElement';
+import Constants from '../utils/Constants';
 
 export default class DynamicTextElement {
 
-  constructor(game, textString, style, x, y/*, ...args*/) {
+  constructor(game, textString, style, x, y, inputEnabled = false/*, ...args*/) {
+    this._game = game;
     // Keeps track of text elements included
     this.textList = [];
     this.start = new Phaser.Point(x,y);
     this.end = new Phaser.Point(0,0);
-    this._game = game;
     this.colorTimer = game.time.create(false /* no autodestroy */);
+    this.inputEnabled = inputEnabled;
 
     this.generate(textString, style, this.start);
   }
@@ -68,10 +70,12 @@ export default class DynamicTextElement {
     let lastText = this.textList[this.textList.length - 1];
     this.end = new Phaser.Point(lastText.x + lastText.element.right, lastText.y);
 
-    if (this.textList.length <= 0)
+    if (this.textList.length <= 0 || !this.inputEnabled)
       return;
 
     this.addClickEvent(() => {
+      // TODO: in the future, this sends a signal to advance
+      // the cycling link index for this element and regenerate the text
       this.textList.forEach((textElement) => {
         textElement.element.addColor('red', 0);
       });
@@ -79,27 +83,27 @@ export default class DynamicTextElement {
 
     const firstElement = this.textList[0].element;
     const startColor = firstElement.colors[0] == null 
-      ? firstElement.style.fill : firstElement.colors[0];
-    const timesteps = 30;
+      ? style.fill : firstElement.colors[0];
 
     const hoverInterp = (source, target) => {
       this.colorTimer.stop(true /* clear events */);
       let currentStep = 0;
-      this.colorTimer.loop(Phaser.Timer.HALF/timesteps, () => {
+      this.colorTimer.loop(Constants.DYN_TEXT_TWEENTIME/Constants.DYN_TEXT_TWEENSTEPS,
+      () => {
         this.textList.forEach((textWrapper) => {
           const element = textWrapper.element;
           const rgbColor = Phaser.Color.valueToColor(
             Phaser.Color.interpolateColor(
               Phaser.Color.hexToRGB(source), 
               Phaser.Color.hexToRGB(target), 
-              timesteps, currentStep
+              Constants.DYN_TEXT_TWEENSTEPS, currentStep
             )
           );
           element.addColor(Phaser.Color.RGBtoString(
             rgbColor.r, rgbColor.g, rgbColor.b), 0);
         });
         currentStep++;
-        if (currentStep > timesteps)
+        if (currentStep > Constants.DYN_TEXT_TWEENSTEPS)
           this.colorTimer.stop(true);
       });
       this.colorTimer.start();
@@ -111,7 +115,7 @@ export default class DynamicTextElement {
     }, () => {
       // out
       const currentColor = firstElement.colors[0] == null
-        ? firstElement.style.fill : firstElement.colors[0]; 
+        ? style.fill : firstElement.colors[0]; 
       hoverInterp(currentColor, startColor);
     });
   }

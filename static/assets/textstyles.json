@@ -6,14 +6,14 @@
 		"align": "left"
 	},
 	"dialogueBody": {
-		"font": "14px Open Sans", 
+		"font": "36px Open Sans", 
 		"fill": "#48f2ff", 
 		"wordWrap": true, 
 		//"wordWrapWidth": "this._dialogTextWidth",
 		"align": "left"
 	},
 	"choiceButton": {
-		"font": "14px Open Sans",
+		"font": "36px Open Sans",
 		"fill": "#48f2ff", 
 		"wordWrap": true,
 		//"wordWrapWidth": this._dialogTextWidth - buttonSidePadding, 
@@ -25,13 +25,13 @@
 		"boundsAlignH": "center"
 	},
 	"mainMenuTitle": {
-		"font": "75px Cinzel Decorative",
+		"font": "124px Cinzel Decorative",
 		"fontWeight": "bold",
 		"fill": "#42dff4",
 		"align": "center"
 	},
 	"mainMenuH1": {
-		"font": "50px Cinzel Decorative",
+		"font": "96px Cinzel Decorative",
 		"fill": "#42dff4",
 		"align": "center"		
 	},

@@ -18,5 +18,9 @@ export default class Constants {
   static get DPANEL_ORIGIN_Y() { return 16; }
   static get DPANEL_GAME_WIDTH() { return 0.8; }
   static get DPANEL_GAME_HEIGHT() { return 0.75; }
+
+  /* DynamicTextElement constants */
+  static get DYN_TEXT_TWEENTIME() { return Phaser.Timer.HALF; }
+  static get DYN_TEXT_TWEENSTEPS() { return 30; }
   
 }
