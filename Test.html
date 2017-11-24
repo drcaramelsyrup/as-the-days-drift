@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>Test</title>
+		<meta charset="UTF-8">
+		<script type="text/javascript">
+/**
+ * Entweedle - Twine 2 Twee Export Story Format
+ * 
+ * Copyright (c) 2016 Michael McCollum
+ * http://www.maximumverbosity.net/twine/Entweedle/
+ *
+ * This license applies exclusively to the Entweedle story format for Twine 2. No ownership of, nor
+ * licensing restrictions on, the content within the generated story are stated or implied.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+ * subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or substantial
+ * portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+ * LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+window.onload=function(){if(typeof(window.Entweedle)=="undefined"){window.Entweedle={convert:function(){var output=window.document.getElementById("output");output.innerHTML=this.export();},export:function(){var buffer=[];var storyData=window.document.getElementsByTagName("tw-storydata");if(storyData){buffer.push(this.buildPassage("StoryTitle","",storyData[0].getAttribute("name")));}
+var userScript=window.document.getElementById("twine-user-script");if(userScript){buffer.push(this.buildPassage("UserScript","script",userScript.innerHTML));}
+var userStylesheet=window.document.getElementById("twine-user-stylesheet");if(userStylesheet){buffer.push(this.buildPassage("UserStylesheet","stylesheet",userStylesheet.innerHTML));}
+var passages=window.document.getElementsByTagName("tw-passagedata");for(var i=0;i<passages.length;++i){buffer.push(this.buildPassageFromElement(passages[i]));}
+return buffer.join('');},buildPassageFromElement:function(passage){var name=passage.getAttribute("name");if(!name){name="Untitled Passage";}
+var tags=passage.getAttribute("tags");var content=passage.textContent;return this.buildPassage(name,tags,content);},buildPassage:function(title,tags,content){var result=[];result.push(":: ",title);if(tags){result.push("[",tags,"]");}
+result.push("\r\n",this.scrub(content),"\r\n\r\n");return result.join('');},scrub:function(content){if(content){content=content.replace(/^::/gm," ::");content=content.replace(/\</gm,"&lt;");content=content.replace(/\>/gm,"&gt;");}
+return content;}}}
+window.Entweedle.convert();}		
+		</script>
+	</head>
+	<body>
+		<pre id="output">
+		
+		</pre>
+		<div id="storyData" style="display: none;">
+			<tw-storydata name="Test" startnode="1" creator="Twine" creator-version="2.0.11" ifid="8029D310-6BBC-4EFA-A5FB-1696EEE8BE5C" format="Entweedle" options="" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+
+</style><script role="script" id="twine-user-script" type="text/twine-javascript">
+
+</script><tw-passagedata pid="1" name="sample" tags="" position="458,286">He was having trouble in _cycle_subject. You remember you bought him an organizer as a sort of light intervention. _cycle_workstyle.
+
+[[And then]]
+
+&lt;!--CYCLE--&gt;
+(link: &quot;oblivious_option&quot;)[(set: $prospective += 2)(set: $passive += 1)(replace: &quot;_cycle_workstyle&quot;)[He&#39;d still forget his homework at your house, a collection of unintelligible scribbles, and then forget to pick it up the next day.]]
+(if: $neuroticism &gt; 5)[(link: &quot;organized_option&quot;)[(set: $resolute += 2)(replace: &quot;_cycle_workstyle&quot;)[Oftentimes he&#39;d force himself to write in it. When that didn&#39;t work, he&#39;d tear out pages and stick them to his doorway. Each time you came over to his place, he&#39;d mutter a barely audible apology and quickly rip off the old collage of papers.]]]
+(link: &quot;math&quot;)[(set: $career to engineer)(replace: &quot;_cycle_subject&quot;)[precalculus, which was a problem since he wanted to be a civil engineer. You told him at this rate he&#39;d only be building the sort of bridges that&#39;d be in the front page of the papers, for all the wrong reasons.]]
+(link: &quot;english&quot;)[(set: $career to journalist)(replace: &quot;_cycle_subject&quot;)[English lit, which was a problem for his budding interest in journalism.]]
+(link: &quot;science&quot;)[(set: $career to biologist)(replace: &quot;_cycle_subject&quot;)[chemistry, which was a problem for an aspiring biologist.]]
+&lt;!--END_CYCLE--&gt;</tw-passagedata>
+<tw-passagedata pid="2" name="And then" tags="" position="458,436">It&#39;s easy to understand.</tw-passagedata>
+</tw-storydata>
+
+		</div>
+	</body>
+</html>

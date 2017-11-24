@@ -306,14 +306,17 @@ export default class ConversationManager {
     const links = {};
     const text = this.getTextForNode(conversation, index);
     let textPos = 0;
-    Object.keys(cyclingLinkMap).forEach((cycleId) => {
+
+    const cycles = conversation[index].cycles;
+    Object.keys(cycles).forEach((cycleId) => {
       elements.push(text.substr(textPos, text.indexOf(cycleId) - textPos));
       textPos = text.indexOf(cycleId) + cycleId.length;
       const cycleIndex = cyclingLinkMap[cycleId];
-      const phrase = conversation[index].cycles[cycleId][cycleIndex].text;
+      const phrase = cycles[cycleId][cycleIndex].text;
       elements.push(phrase);
       links[elements.length-1] = cycleId;
     });
+
     if (textPos < text.length)
       elements.push(text.substr(textPos));
     return { 'elements': elements, 'links': links };

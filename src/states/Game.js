@@ -42,8 +42,21 @@ export default class Game extends Phaser.State {
     this.convoManager.takeActions();
     this.dialoguePanel.show();
 
+    const display = (game, player, conversation, index) => {
+      this.dialoguePanel.clean();
+      this.dialoguePanel.displayWrappables(
+        makeWrappables(game, player, conversation, index, player.cyclingLinks)
+      );
+      this.dialoguePanel.displayResponses(
+        this.convoManager.getResponsesForNode(conversation, index),
+        (target) => {
+          display(game, player, conversation, target);
+        }
+      );
+    };
 
     const makeWrappables = (game, player, conversation, index, cyclingLinks) => {
+
       const dynamicText = this.convoManager.getDynamicTextElements(conversation, index, cyclingLinks);
       let start = new Phaser.Point(0,0);
       let end = new Phaser.Point(0,0);
@@ -58,10 +71,7 @@ export default class Game extends Phaser.State {
             const cycleIdx = player.cyclingLinks[cycleId];
             player.cyclingLinks[cycleId] = this.convoManager.nextValidCycleLinkIndex(
               player, conversation, index, cycleId, cycleIdx);
-            this.dialoguePanel.clean();
-            this.dialoguePanel.displayWrappables(
-              makeWrappables(game, player, conversation, 0, player.cyclingLinks)
-            );
+            display(game, player, conversation, index);
           } 
           : null;
         const newText = new DynamicTextElement(
@@ -75,9 +85,9 @@ export default class Game extends Phaser.State {
 
     };
 
-    this.dialoguePanel.displayWrappables(makeWrappables(
-      this.game, player, conversation, 0, player.cyclingLinks));
+    display(this.game, player, conversation, 0);
 
+    
 
     // for all dialogue fragments, display
     // let { fragments, responses } = this.convoManager.getDialogue();

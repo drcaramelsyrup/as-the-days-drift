@@ -36,6 +36,7 @@ export default class DialoguePanel extends Phaser.Group {
     this.onTextFinished = new Phaser.Signal(); // when the char-by-char display finishes
 
     this.panel = this.createPanel(game);
+    this.responsePanel = this.createResponsePanel(game);
 
     /**
      * Interactables
@@ -95,9 +96,30 @@ export default class DialoguePanel extends Phaser.Group {
     return panel;
   }
 
+  createResponsePanel(game) {
+    // private members specifying margin and padding
+    const panelHeight = game.height * Constants.DPANEL_GAME_HEIGHT;
+    const panelWidth = game.width * Constants.DPANEL_GAME_WIDTH;
+
+    const panelSprite = game.make.sprite(0,0,'invisible');
+    panelSprite.anchor = new Phaser.Point(0.5, 0.5);
+
+    const panel = new UIElement(game,
+      game.width/2 - panelWidth/2, game.height/2 + panelHeight/2,
+      panelSprite,
+      game, panelWidth, panelHeight
+    );
+
+    panel.alpha = 0.8;
+    return panel;
+  }
+
   clean() {
     this.panel.destroy();
     this.panel = this.createPanel(this._game);
+    this.responsePanel.destroy();
+    this.responsePanel = this.createResponsePanel(this._game);
+
     // stop all button tweens
     for (let i = 0; i < this.buttonTweens.length; i++) {
       this.buttonTweens[i].stop();
@@ -181,21 +203,18 @@ export default class DialoguePanel extends Phaser.Group {
   //   return this.bodyText;
   // }
 
-  displayResponses({ text, responses = [] }) {
-    const { x, y } = text;
-    const { height } = text.element;
-    
-    let textYEnd = y+height;
+  displayResponses(responses = [], callback) {
+    let y = 0;
     for (let response of responses) {
       const { text, target } = response;
       const params = [];
-      const labelButton = this.createButton(x, textYEnd, text, target, params);
-      textYEnd += labelButton.height;
+      const labelButton = this.createButton(0, y, text, target, params, callback);
+      y += labelButton.height;
       // textYEnd += labelButton.children[0];
     }
   }
 
-  createButton(x = 0, y = 0, responseText = '', responseTarget = 0, responseParams = []) {
+  createButton(x = 0, y = 0, responseText = '', responseTarget = 0, responseParams = [], callback) {
     // display text
     const buttonSidePadding = 32;
     const buttonTextStyle = textstyles['choiceButton'];
@@ -205,9 +224,9 @@ export default class DialoguePanel extends Phaser.Group {
     let centerX = Math.round(this._textWidth / 2 - buttonText.width / 2);
 
     // add to sized button
-    let choiceButton = this._game.make.button(0,0, 'dialogue-choice-button'); 
+    let choiceButton = this._game.make.button(0,0, 'invisible'); 
     
-    this.panel.add(new UIElement(this._game, x, y, choiceButton, null, this._textWidth, buttonText.height))
+    this.responsePanel.add(new UIElement(this._game, x, y, choiceButton, null, this._textWidth, buttonText.height))
       .add(new UIElement(this._game, centerX, 0, buttonText, null));
 
     // end of conversation. action deletes window
@@ -219,12 +238,16 @@ export default class DialoguePanel extends Phaser.Group {
     }
 
     choiceButton.events.onInputUp.add(() => {
-      this._game.sound.play('tap');
-      const shouldRefresh = this.convoManager.advanceToTarget(
-        responseTarget, responseParams);
-      // if (shouldRefresh)
-        // this.display();
+      callback(responseTarget, responseParams);
     });
+
+    // choiceButton.events.onInputUp.add(() => {
+    //   this._game.sound.play('tap');
+    //   const shouldRefresh = this.convoManager.advanceToTarget(
+    //     responseTarget, responseParams);
+    //   // if (shouldRefresh)
+    //     // this.display();
+    // });
 
     return choiceButton;
 
