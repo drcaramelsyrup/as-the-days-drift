@@ -78,6 +78,14 @@ export default class UIElement {
     }
   }
 
+  removeAll() {
+    this.container.children.forEach((child) => {
+      // child.destroy();
+      if (child instanceof UIElement)
+        child.removeFromParent();
+    });
+  }
+
   removeFromParent() {
     if (!(this.parent instanceof UIElement))
       return;
@@ -104,7 +112,8 @@ export default class UIElement {
   destroy() {
     // mark Phaser element for destruction
     this.removeFromParent();
-    this.container.destroy();
+    this.element.destroy();
+    this.container.displayGroup.destroy();
   }
 
   get x() {

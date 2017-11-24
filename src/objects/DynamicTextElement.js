@@ -10,14 +10,14 @@ import Constants from '../utils/Constants';
 
 export default class DynamicTextElement {
 
-  constructor(game, textString, style, x, y, inputEnabled = false/*, ...args*/) {
+  constructor(game, textString, style, x, y, callback = null/*, ...args*/) {
     this._game = game;
     // Keeps track of text elements included
     this.textList = [];
     this.start = new Phaser.Point(x,y);
     this.end = new Phaser.Point(0,0);
     this.colorTimer = game.time.create(false /* no autodestroy */);
-    this.inputEnabled = inputEnabled;
+    this.callback = callback;
 
     this.generate(textString, style, this.start);
   }
@@ -70,15 +70,13 @@ export default class DynamicTextElement {
     let lastText = this.textList[this.textList.length - 1];
     this.end = new Phaser.Point(lastText.x + lastText.element.right, lastText.y);
 
-    if (this.textList.length <= 0 || !this.inputEnabled)
+    if (this.textList.length <= 0 || this.callback == null)
       return;
 
     this.addClickEvent(() => {
       // TODO: in the future, this sends a signal to advance
       // the cycling link index for this element and regenerate the text
-      this.textList.forEach((textElement) => {
-        textElement.element.addColor('red', 0);
-      });
+      this.callback();
     });
 
     const firstElement = this.textList[0].element;

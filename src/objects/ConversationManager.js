@@ -303,7 +303,7 @@ export default class ConversationManager {
 
   getDynamicTextElements(conversation = {}, index = 0, cyclingLinkMap = {}) {
     const elements = [];
-    const links = [];
+    const links = {};
     const text = this.getTextForNode(conversation, index);
     let textPos = 0;
     Object.keys(cyclingLinkMap).forEach((cycleId) => {
@@ -312,15 +312,11 @@ export default class ConversationManager {
       const cycleIndex = cyclingLinkMap[cycleId];
       const phrase = conversation[index].cycles[cycleId][cycleIndex].text;
       elements.push(phrase);
-      links.push(elements.length - 1);
+      links[elements.length-1] = cycleId;
     });
     if (textPos < text.length)
       elements.push(text.substr(textPos));
-    return { 'elements': elements, 'links': links }
-  }
-
-  getCyclingLinkIds(conversation = {}, index = 0) {
-    return Object.keys(conversation[index].cycles);
+    return { 'elements': elements, 'links': links };
   }
 
   getCyclingLinkText(conversation = {}, index = 0, linkId = '', linkIdx = 0) {

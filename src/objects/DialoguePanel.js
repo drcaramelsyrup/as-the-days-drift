@@ -35,6 +35,24 @@ export default class DialoguePanel extends Phaser.Group {
     /* SIGNALS */
     this.onTextFinished = new Phaser.Signal(); // when the char-by-char display finishes
 
+    this.panel = this.createPanel(game);
+
+    /**
+     * Interactables
+     */
+    // for removing player choice buttons
+    this.buttons = [];
+    this.buttonTweens = [];
+
+    // will track the conversation file, so that save checkpoints will
+    // go to the correct area in the conversation
+    this.convoFile = null;
+
+    // for rendering lines character by character
+    this.charTimer = null;
+  }
+
+  createPanel(game) {
     // private members specifying margin and padding
     const TOTAL_PADDING = Constants.DPANEL_PADDING_LEFT + Constants.DPANEL_PADDING_RIGHT;
 
@@ -48,7 +66,7 @@ export default class DialoguePanel extends Phaser.Group {
     const panelSprite = game.make.sprite(0,0,'invisible');
     panelSprite.anchor = new Phaser.Point(0.5, 0.5);
 
-    this.panel = new UIElement(game,
+    const panel = new UIElement(game,
       game.height/2 - panelHeight/2, game.width/2 - panelWidth/2,
       panelSprite,
       game, panelWidth, panelHeight
@@ -56,8 +74,8 @@ export default class DialoguePanel extends Phaser.Group {
 
     // dialog text dimensions (private)
     // TODO: these dimensions aren't modular / don't make sense!
-    this._textHeight = panelHeight - Constants.DPANEL_TEXT_ORIGIN.y - 18;
-    this._textWidth = panelWidth - 185;
+    // this._textHeight = panelHeight - Constants.DPANEL_TEXT_ORIGIN.y - 18;
+    // this._textWidth = panelWidth - 185;
 
     /**
      * Text styles
@@ -73,26 +91,13 @@ export default class DialoguePanel extends Phaser.Group {
     //   /*this.panel*/null
     // );
 
-    this.panel.alpha = 0.8;
-
-    /**
-     * Interactables
-     */
-    // for removing player choice buttons
-    this.buttons = [];
-    this.buttonTweens = [];
-
-    // will track the conversation file, so that save checkpoints will
-    // go to the correct area in the conversation
-    this.convoFile = null;
-
-    // for rendering lines character by character
-    this.charTimer = null;
-
-
+    panel.alpha = 0.8;
+    return panel;
   }
 
   clean() {
+    this.panel.destroy();
+    this.panel = this.createPanel(this._game);
     // stop all button tweens
     for (let i = 0; i < this.buttonTweens.length; i++) {
       this.buttonTweens[i].stop();
