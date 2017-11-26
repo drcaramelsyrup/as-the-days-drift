@@ -217,11 +217,11 @@ export default class ConversationManager {
     const conditions = cycle['conditions'];
     for (const variable in conditions) {
       // parse type
+      let isFulfilled = false;
       if (variable in player.variables) {
         const playerVal = player.variables[variable];
         const val = conditions[variable]['val'];
         const type = conditions[variable]['type'];
-        let isFulfilled = false;
         switch (type) {
         case '>':
           isFulfilled = playerVal > val;
@@ -240,10 +240,9 @@ export default class ConversationManager {
         default:
           isFulfilled = playerVal === val;
         }
-        if (isFulfilled)
-          continue;
-        return false;
       }
+      if (!isFulfilled)
+        return false;
     }
     return true;
   }
@@ -323,7 +322,31 @@ export default class ConversationManager {
   }
 
   getCyclingLinkText(conversation = {}, index = 0, linkId = '', linkIdx = 0) {
-    return conversation[index].cycles[linkId][linkIdx];
+    return conversation[index].cycles[linkId][linkIdx].text;
+  }
+
+  getCyclingLinkActions(conversation = {}, index = 0, linkId = '', linkIdx = 0) {
+    return conversation[index].cycles[linkId][linkIdx].actions;
+  }
+
+  getActionsForCyclingLinks(conversation = {}, index = 0, cyclingLinkMap = {}) {
+    const actions = {};
+    Object.keys(cyclingLinkMap).forEach((cycleId) => {
+      const cycleIndex = cyclingLinkMap[cycleId];
+      const linkActions = this.getCyclingLinkActions(conversation, index, cycleId, cycleIndex);
+      Object.keys(linkActions).forEach((actionKey) => {
+        if (actions.hasOwnProperty(actionKey)) {
+          const asInt = parseInt(linkActions[actionKey]);
+          const currAsInt = parseInt(actions[actionKey]);
+          if (!isNaN(asInt) && !isNaN(currAsInt)) {
+            actions[actionKey] = currAsInt + asInt;
+            return;
+          }
+        }
+        actions[actionKey] = linkActions[actionKey];
+      });
+    });
+    return actions;
   }
 
   endConversation() {

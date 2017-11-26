@@ -64,21 +64,29 @@ export default class Game extends Phaser.State {
       textstyle.wordWrapWidth = game.width * Constants.DPANEL_GAME_WIDTH;
       const wrappables = [];
       dynamicText.elements.forEach((elem, idx) => {
+
         start = end;
-        const callback = dynamicText.links.hasOwnProperty(idx)
+        const cycleId = dynamicText.links[idx];
+        const cycleIdx = player.cyclingLinks[cycleId];
+        const isInteractable = dynamicText.links.hasOwnProperty(idx)
+          && this.convoManager.nextValidCycleLinkIndex(player, conversation, index, cycleId, cycleIdx) !== -1;
+
+        const callback = isInteractable
           ? () => {
-            const cycleId = dynamicText.links[idx];
-            const cycleIdx = player.cyclingLinks[cycleId];
             player.cyclingLinks[cycleId] = this.convoManager.nextValidCycleLinkIndex(
               player, conversation, index, cycleId, cycleIdx);
+            player.pendingVariables = this.convoManager.getActionsForCyclingLinks(
+              conversation, index, player.cyclingLinks);
             display(game, player, conversation, index);
           } 
           : null;
         const newText = new DynamicTextElement(
           game, elem, textstyle, start.x, start.y, callback
         );
+
         end = newText.end;
         wrappables.push(newText);
+
       });
 
       return wrappables;

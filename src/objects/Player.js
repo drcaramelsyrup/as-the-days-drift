@@ -13,7 +13,7 @@ export default class Player {
   constructor() {
     // Both qualities and conditionals will be lumped in here
     this.variables = {};
-    // keep track of flashback state?
+    this.pending = {};
     this.convoIdx = 0;
     this.convoFile = null;
     // Cycling link map
@@ -40,6 +40,8 @@ export default class Player {
     obj['convoFile'] = game.dialogueWindow.convoFile;
     return JSON.stringify(obj);
   }
+
+
 }
 
 Player.unserialize = (playerState, game) => {
