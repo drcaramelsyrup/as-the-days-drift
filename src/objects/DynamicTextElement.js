@@ -24,7 +24,12 @@ export default class DynamicTextElement {
 
   textCutoff(textContext = {}, inWords = [], cutoffWidth = 0) {
     for (let idx = 0; idx < inWords.length; idx++) {
-      let phrase = inWords.slice(0, idx+1).join(' ');
+      if (inWords[idx].includes('\n'))
+        return idx;
+      if (inWords[idx].includes(' '))
+        continue;
+
+      let phrase = inWords.slice(0, idx+1).join('');
 
       let width = textContext.measureText(phrase).width;
       // We want to start a new line if the width exceeds the cutoff
@@ -49,10 +54,10 @@ export default class DynamicTextElement {
     if (style.wordWrapWidth <= 0)
       return;
 
-    let words = toMeasure.text.split(' ');
+    let words = toMeasure.text.split(/(\n| )/);
     while (words.length > 0) {
       let idx = this.textCutoff(toMeasure.context, words, style.wordWrapWidth - nextX);
-      let phrase = words.slice(0, idx+1).join(' ');
+      let phrase = words.slice(0, idx+1).join('');
       // check: game.make might return void
       this.textList.push(
         new UIElement(this._game, nextX, nextY,
