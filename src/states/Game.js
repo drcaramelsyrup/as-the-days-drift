@@ -75,7 +75,7 @@ export default class Game extends Phaser.State {
           ? () => {
             player.cyclingLinks[cycleId] = this.convoManager.nextValidCycleLinkIndex(
               player, conversation, index, cycleId, cycleIdx);
-            player.pendingVariables = this.convoManager.getActionsForCyclingLinks(
+            player.pending = this.convoManager.getActionsForCyclingLinks(
               conversation, index, player.cyclingLinks);
             display(game, player, conversation, index);
           } 
