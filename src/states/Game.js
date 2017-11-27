@@ -43,10 +43,10 @@ export default class Game extends Phaser.State {
     convoManager.takeActions();
     dialoguePanel.show();
 
-    const display = (game, player, conversation, index) => {
+    const display = (game, player, conversation, index, colorMap = {}) => {
       dialoguePanel.clean();
       dialoguePanel.displayWrappables(
-        makeWrappables(game, player, conversation, index, player.cyclingLinks)
+        makeWrappables(game, player, conversation, index, colorMap)
       );
       dialoguePanel.displayResponses(
         convoManager.getResponsesForNode(conversation, index),
@@ -57,9 +57,9 @@ export default class Game extends Phaser.State {
       );
     };
 
-    const makeWrappables = (game, player, conversation, index, cyclingLinks) => {
+    const makeWrappables = (game, player, conversation, index, colorMap = {}) => {
 
-      const dynamicText = convoManager.getDynamicTextElements(conversation, index, cyclingLinks);
+      const dynamicText = convoManager.getDynamicTextElements(player, conversation, index);
       let start = new Phaser.Point(0,0);
       let end = new Phaser.Point(0,0);
       const textstyle = textstyles['dialogueBody'];
@@ -74,17 +74,22 @@ export default class Game extends Phaser.State {
           && convoManager.nextValidCycleLinkIndex(player, conversation, index, cycleId, cycleIdx) !== -1;
 
         const callback = isInteractable
-          ? () => {
+          ? (color) => {
             player.cyclingLinks[cycleId] = convoManager.nextValidCycleLinkIndex(
               player, conversation, index, cycleId, cycleIdx);
             player.pending = convoManager.getActionsForCyclingLinks(
               conversation, index, player.cyclingLinks);
-            display(game, player, conversation, index);
+            const colorOnClick = {};
+            colorOnClick[cycleId] = color;
+            display(game, player, conversation, index, colorOnClick);
           } 
           : null;
+
         const newText = new DynamicTextElement(
           game, elem, textstyle, start.x, start.y, callback
         );
+        if (colorMap.hasOwnProperty(cycleId))
+          newText.setColor(colorMap[cycleId]);
 
         end = newText.end;
         wrappables.push(newText);

@@ -35,9 +35,18 @@ export default class ConversationManager {
     // the player object may want to initialize the start index of a conversation
   }
 
-  // TODO: this could be modified by cycling links.
-  getTextForNode(conversation = {}, index = 0) {
+  getRawTextForNode(conversation = {}, index = 0) {
     return conversation[index]['text'];
+  }
+
+  getTextForNode(conversation = {}, index = 0, variables = {}) {
+    const raw = this.getRawTextForNode(conversation, index);
+    // '$' character denotes a variable
+    return raw.replace(/\$\w+/, (match) => {
+      if (match.length > 0 && variables.hasOwnProperty(match.slice(1)))
+        return variables[match.slice(1)];
+      return match;
+    });
   }
 
   getResponsesForNode(conversation = {}, index = 0) {
@@ -261,17 +270,17 @@ export default class ConversationManager {
 
   }
 
-  getDynamicTextElements(conversation = {}, index = 0, cyclingLinkMap = {}) {
+  getDynamicTextElements(player = {}, conversation = {}, index = 0) {
     const elements = [];
     const links = {};
-    const text = this.getTextForNode(conversation, index);
+    const text = this.getTextForNode(conversation, index, player.variables);
     let textPos = 0;
 
     const cycles = conversation[index].cycles;
     Object.keys(cycles).forEach((cycleId) => {
       elements.push(text.substr(textPos, text.indexOf(cycleId) - textPos));
       textPos = text.indexOf(cycleId) + cycleId.length;
-      const cycleIndex = cyclingLinkMap[cycleId];
+      const cycleIndex = player.cyclingLinks[cycleId];
       const phrase = cycles[cycleId][cycleIndex].text;
       elements.push(phrase);
       links[elements.length-1] = cycleId;

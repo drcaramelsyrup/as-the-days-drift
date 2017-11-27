@@ -176,7 +176,7 @@ export default class DialoguePanel extends Phaser.Group {
 
   displayResponses(responses = [], callback = null) {
     let y = 0;
-    responses.forEach((response, idx) => {
+    responses.forEach((response) => {
       const { text, target } = response;
       const labelButton = this.createButton(
         0, y, text, target, [], callback
