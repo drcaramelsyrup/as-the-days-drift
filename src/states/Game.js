@@ -25,31 +25,33 @@ export default class Game extends Phaser.State {
   }
 
   create() {
+    const game = this.game;
+
     // custom actions for conversations
-    let customActions = new CustomActions(this.game);
+    let customActions = new CustomActions(game);
     // conversation manager
-    this.convoManager = new ConversationManager(this.game, customActions);
+    const convoManager = new ConversationManager(game, customActions);
 
     // dialogue window object
-    this.dialoguePanel = new DialoguePanel(this.game, this.convoManager);
+    const dialoguePanel = new DialoguePanel(game, convoManager);
 
     const player = new Player();
 
-    const {centerX: x, centerY: y} = this.world;
-    const conversation = this.convoManager.loadJSONConversation('output_cyclinglink');
-    player.cyclingLinks = this.convoManager.startCyclingLinkMap(this.game.player, conversation, 0);
+    const conversation = convoManager.loadJSONConversation('output_cyclinglink');
+    player.cyclingLinks = convoManager.startCyclingLinkMap(player, conversation, 0);
 
-    this.convoManager.takeActions();
-    this.dialoguePanel.show();
+    convoManager.takeActions();
+    dialoguePanel.show();
 
     const display = (game, player, conversation, index) => {
-      this.dialoguePanel.clean();
-      this.dialoguePanel.displayWrappables(
+      dialoguePanel.clean();
+      dialoguePanel.displayWrappables(
         makeWrappables(game, player, conversation, index, player.cyclingLinks)
       );
-      this.dialoguePanel.displayResponses(
-        this.convoManager.getResponsesForNode(conversation, index),
+      dialoguePanel.displayResponses(
+        convoManager.getResponsesForNode(conversation, index),
         (target) => {
+          player.variables = convoManager.mergeQualities(player.variables, player.pending);
           display(game, player, conversation, target);
         }
       );
@@ -57,7 +59,7 @@ export default class Game extends Phaser.State {
 
     const makeWrappables = (game, player, conversation, index, cyclingLinks) => {
 
-      const dynamicText = this.convoManager.getDynamicTextElements(conversation, index, cyclingLinks);
+      const dynamicText = convoManager.getDynamicTextElements(conversation, index, cyclingLinks);
       let start = new Phaser.Point(0,0);
       let end = new Phaser.Point(0,0);
       const textstyle = textstyles['dialogueBody'];
@@ -69,13 +71,13 @@ export default class Game extends Phaser.State {
         const cycleId = dynamicText.links[idx];
         const cycleIdx = player.cyclingLinks[cycleId];
         const isInteractable = dynamicText.links.hasOwnProperty(idx)
-          && this.convoManager.nextValidCycleLinkIndex(player, conversation, index, cycleId, cycleIdx) !== -1;
+          && convoManager.nextValidCycleLinkIndex(player, conversation, index, cycleId, cycleIdx) !== -1;
 
         const callback = isInteractable
           ? () => {
-            player.cyclingLinks[cycleId] = this.convoManager.nextValidCycleLinkIndex(
+            player.cyclingLinks[cycleId] = convoManager.nextValidCycleLinkIndex(
               player, conversation, index, cycleId, cycleIdx);
-            player.pending = this.convoManager.getActionsForCyclingLinks(
+            player.pending = convoManager.getActionsForCyclingLinks(
               conversation, index, player.cyclingLinks);
             display(game, player, conversation, index);
           } 
@@ -93,22 +95,22 @@ export default class Game extends Phaser.State {
 
     };
 
-    display(this.game, player, conversation, 0);
+    display(game, player, conversation, 0);
 
     
 
     // for all dialogue fragments, display
-    // let { fragments, responses } = this.convoManager.getDialogue();
+    // let { fragments, responses } = convoManager.getDialogue();
 
     // TODO: async
-    // this.dialoguePanel.clean();
+    // dialoguePanel.clean();
 
     // await display finish
     // display responses
-    // this.dialoguePanel.displayResponses({
-      // text: this.dialoguePanel.writeBodyText(
-        // this.convoManager.getCurrentText()),
-      // responses: this.convoManager.getResponses(),
+    // dialoguePanel.displayResponses({
+      // text: dialoguePanel.writeBodyText(
+        // convoManager.getCurrentText()),
+      // responses: convoManager.getResponses(),
     // });
 
     // then user acknowledgement will be conveyed through buttons

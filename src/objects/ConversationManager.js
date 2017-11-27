@@ -172,14 +172,6 @@ export default class ConversationManager {
     }
   }
 
-  // 1. nab text
-  // 2. hey, are there any cycling links?
-  // 3. replace text
-  // 4. submit -> goes to check cycling links for their variables
-  // ^ so we need to store cycling links in the player... like an immutable temporary cache
-  // { 'id': index of link, 'nextId': index of link }
-  // ^^ we need to store them /every time/ a cycling link changes to update the UI
-
   getCyclingLinkIds(conversation = {}, index = 0) {
     return Object.keys(conversation[index]['cycles']);
   }
@@ -247,57 +239,26 @@ export default class ConversationManager {
     return true;
   }
 
-  getCyclingLinkActionList(cyclingLinkMap = {}, conversation = {}, index = 0) {
-    let actions = [];
-    for (const cycleId in cyclingLinkMap) {
-      actions.push(conversation[index][cycleId]['actions']);
-    }
-    return actions;
-  }
+  mergeQualities(first = {}, second = {}) {
 
-  actionsToQualityMap(actions = []) {
-    let condensed = {};
-    for (let i = 0; i < actions.length; i++) {
-      for (const variable in actions[i]) {
-        const val = actions[i][variable];
-        const asInt = parseInt(val);
-        if (!isNaN(asInt)) {
-          if (!(variable in condensed))
-            condensed[variable] = asInt;
-          else
-            condensed[variable] += asInt;
-          continue;
+    const merged = {};
+    const merge = (ret, map) => {
+      Object.keys(map).forEach((key) => {
+        if (ret.hasOwnProperty(key)) {
+          const asInt = parseInt(ret[key]);
+          const dataAsInt = parseInt(map[key]);
+          if (!isNaN(asInt) && !isNaN(dataAsInt)) {
+            ret[key] = asInt + dataAsInt;
+            return;
+          }
         }
-        condensed[variable] = val;
-      }
-    }
-    return condensed;
-  }
+        ret[key] = map[key];
+      });
+    };
+    merge(merged, first);
+    merge(merged, second);
+    return merged;
 
-  // the second quality map replaces qualities of the first if not numeric
-  mergeQualityMaps(first = {}, second = {}) {
-    let ret = {};
-    for (const variable in first) {
-      ret[variable] = first[variable];
-    }
-    for (const variable in second) {
-      const val = second[variable];
-      if (typeof val === 'number') {
-        if (variable in ret) {
-          ret[variable] += val;
-          continue;
-        }
-      }
-      ret[variable] = val;
-    }
-    return ret;
-  }
-
-  addCyclingLinksToQualityMap(qualities = {}, cyclingLinkMap = {}, conversation = {}, index = 0) {
-    const condensedMap = this.actionsToQualityMap(
-      this.getCyclingLinkActionList(cyclingLinkMap, conversation, index));
-
-    return this.mergeQualityMaps(qualities, condensedMap);
   }
 
   getDynamicTextElements(conversation = {}, index = 0, cyclingLinkMap = {}) {
@@ -330,23 +291,13 @@ export default class ConversationManager {
   }
 
   getActionsForCyclingLinks(conversation = {}, index = 0, cyclingLinkMap = {}) {
-    const actions = {};
-    Object.keys(cyclingLinkMap).forEach((cycleId) => {
-      const cycleIndex = cyclingLinkMap[cycleId];
-      const linkActions = this.getCyclingLinkActions(conversation, index, cycleId, cycleIndex);
-      Object.keys(linkActions).forEach((actionKey) => {
-        if (actions.hasOwnProperty(actionKey)) {
-          const asInt = parseInt(linkActions[actionKey]);
-          const currAsInt = parseInt(actions[actionKey]);
-          if (!isNaN(asInt) && !isNaN(currAsInt)) {
-            actions[actionKey] = currAsInt + asInt;
-            return;
-          }
-        }
-        actions[actionKey] = linkActions[actionKey];
-      });
-    });
-    return actions;
+    return Object.keys(cyclingLinkMap).reduce((acc, id) => {
+      return this.mergeQualities(
+        acc, this.getCyclingLinkActions(
+          conversation, index, id, cyclingLinkMap[id]
+        )
+      );
+    }, {});
   }
 
   endConversation() {

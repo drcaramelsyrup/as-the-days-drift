@@ -54,13 +54,7 @@ export default class DialoguePanel extends Phaser.Group {
   }
 
   createPanel(game) {
-    // private members specifying margin and padding
-    const TOTAL_PADDING = Constants.DPANEL_PADDING_LEFT + Constants.DPANEL_PADDING_RIGHT;
-
     // window coordinates
-    const panelX = Constants.DPANEL_ORIGIN_X;
-    const panelY = Constants.DPANEL_ORIGIN_Y;  
-
     const panelHeight = game.height * Constants.DPANEL_GAME_HEIGHT;
     const panelWidth = game.width * Constants.DPANEL_GAME_WIDTH;
 
@@ -119,29 +113,6 @@ export default class DialoguePanel extends Phaser.Group {
     this.panel = this.createPanel(this._game);
     this.responsePanel.destroy();
     this.responsePanel = this.createResponsePanel(this._game);
-
-    // stop all button tweens
-    for (let i = 0; i < this.buttonTweens.length; i++) {
-      this.buttonTweens[i].stop();
-    }
-
-    // remove all buttons
-    for (let j = 0; j < this.buttons.length; j++) {
-      let button = this.buttons[j];
-      // TODO: destroy buttons using UIElement
-      // button.container.displayGroup.removeAll(true);
-      // button.container.displayGroup.destroy();
-      // button.container.children = [];
-      // button.container = undefined;
-      // button.sprite = undefined;
-    }
-    this.buttons = [];
-
-    // this.bodyText.y = this._textOriginY;
-    // this.dialogText.displayObject.inputEnabled = false;
-    // this.dialogText.displayObject.events.onInputOver.removeAll();
-    // this.dialogText.displayObject.events.onInputOut.removeAll();
-    // this._game.input.mouse.mouseWheelCallback = null;
   }
 
   displayAvatar() {
@@ -203,36 +174,33 @@ export default class DialoguePanel extends Phaser.Group {
   //   return this.bodyText;
   // }
 
-  displayResponses(responses = [], callback) {
+  displayResponses(responses = [], callback = null) {
     let y = 0;
-    for (let response of responses) {
+    responses.forEach((response, idx) => {
       const { text, target } = response;
-      const params = [];
-      const labelButton = this.createButton(0, y, text, target, params, callback);
+      const labelButton = this.createButton(
+        0, y, text, target, [], callback
+      );
       y += labelButton.height;
-      // textYEnd += labelButton.children[0];
-    }
+    });
   }
 
   createButton(x = 0, y = 0, responseText = '', responseTarget = 0, responseParams = [], callback) {
     // display text
-    const buttonSidePadding = 32;
     const buttonTextStyle = textstyles['choiceButton'];
-    buttonTextStyle.wordWrapWidth = this._textWidth - buttonSidePadding;
+    const panelWidth = this._game.width * Constants.DPANEL_GAME_WIDTH;
+    buttonTextStyle.wordWrapWidth = panelWidth;
+
     const buttonText = this._game.make.text(0, 0, responseText, buttonTextStyle);
 
-    let centerX = Math.round(this._textWidth / 2 - buttonText.width / 2);
-
     // add to sized button
-    let choiceButton = this._game.make.button(0,0, 'invisible'); 
-    
-    this.responsePanel.add(new UIElement(this._game, x, y, choiceButton, null, this._textWidth, buttonText.height))
-      .add(new UIElement(this._game, centerX, 0, buttonText, null));
+    const choiceButton = this._game.make.button(0,0, 'invisible'); 
+    this.responsePanel.add(new UIElement(this._game, x, y, choiceButton, null, panelWidth, buttonText.height))
+      .add(new UIElement(this._game, Math.round(panelWidth/2 - buttonText.width/2), 0, buttonText, null));
 
     // end of conversation. action deletes window
     if (responseTarget < 0) {
       choiceButton.events.onInputUp.add(() => {
-        this.hide();
         this.convoManager.endConversation();  // take any actions that trigger when this conversation ends
       });
     }
@@ -241,67 +209,9 @@ export default class DialoguePanel extends Phaser.Group {
       callback(responseTarget, responseParams);
     });
 
-    // choiceButton.events.onInputUp.add(() => {
-    //   this._game.sound.play('tap');
-    //   const shouldRefresh = this.convoManager.advanceToTarget(
-    //     responseTarget, responseParams);
-    //   // if (shouldRefresh)
-    //     // this.display();
-    // });
-
     return choiceButton;
 
   }
-
-//   displayResponses() {
-//     // start rendering buttons at the bottom of dialogue
-//     const responses = this.convoManager.getResponses(this._game);
-
-//     const textBottom = this._dialogTextOriginY + this.dialogText.displayObject.getBounds().height;
-//     this.nextButtonY = textBottom;
-
-//     if (responses.length === 0) {
-//       // no responses - waiting on player to do something to progress
-//       const waitButton = this.addChoiceButton(this._dialogTextOriginX, this.nextButtonY,
-//         'END', null);
-//       waitButton.visible = false;
-//       this.buttons.push(waitButton);
-//     }
-
-//     this.buttonTweens = [];
-
-//     for (let i = 0; i < responses.length; i++) {
-//       // pass along special parameters, if any
-//       let params = [];
-//       if ('params' in responses[i]) {
-//         params = responses[i]['params'];
-//       }
-
-//       // keep track of buttons to be deleted
-//       const responseDelay = 250;
-//       const button = this.addChoiceButton(
-//         this._dialogTextOriginX, this.nextButtonY,
-//         responses[i]['text'], responses[i]['target'], params);
-//       button.alpha = 0;
-//       const tween = this._game.add.tween(button).to({alpha: 1}, responseDelay, Phaser.Easing.Linear.None, true, responseDelay * i);
-//       this.buttonTweens.push(tween);  // for deletion later
-//       this.buttons.push(button);
-//       this._buttonsY.push(button.y);
-//       this.nextButtonY += button.sprite.height;
-//     }
-
-//     // last element is bottom of content
-//     this._buttonsY.push(this.nextButtonY);
-//   }
-
-
-
-//   hideAvatar() {
-//     const fadeOutTween = this._game.add.tween(this.avatar);
-//     const fadeOut = 200;
-//     fadeOutTween.to({alpha: 0}, fadeOut, Phaser.Easing.Linear.None, true);
-//   }
-
 
 //   hide() {
 //     this.cleanWindow();

@@ -18,6 +18,7 @@ export default class DynamicTextElement {
     this.end = new Phaser.Point(0,0);
     this.colorTimer = game.time.create(false /* no autodestroy */);
     this.callback = callback;
+    this.hoverColor = '#ffff00';
 
     this.generate(textString, style, this.start);
   }
@@ -68,7 +69,6 @@ export default class DynamicTextElement {
       if (words.length > 0) {
         nextX = 0;
         nextY += fontHeight;
-        /* nextY += one line's height */
       }
     }
 
@@ -79,15 +79,16 @@ export default class DynamicTextElement {
       return;
 
     this.addClickEvent(() => {
-      // TODO: in the future, this sends a signal to advance
-      // the cycling link index for this element and regenerate the text
       this.callback();
     });
 
-    const firstElement = this.textList[0].element;
-    const startColor = firstElement.colors[0] == null 
-      ? style.fill : firstElement.colors[0];
+    const getCurrentColor = () => {
+      const firstElement = this.textList[0].element;
+      return firstElement.colors[0] == null
+        ? style.fill : firstElement.colors[0];
+    };
 
+    const startColor = getCurrentColor();
     const hoverInterp = (source, target) => {
       this.colorTimer.stop(true /* clear events */);
       let currentStep = 0;
@@ -114,12 +115,10 @@ export default class DynamicTextElement {
 
     this.addHoverEvent(() => {
       // over
-      hoverInterp(startColor, '#ffff00');
+      hoverInterp(getCurrentColor(), this.hoverColor);
     }, () => {
       // out
-      const currentColor = firstElement.colors[0] == null
-        ? style.fill : firstElement.colors[0]; 
-      hoverInterp(currentColor, startColor);
+      hoverInterp(getCurrentColor(), startColor);
     });
   }
 
