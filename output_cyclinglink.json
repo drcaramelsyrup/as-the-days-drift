@@ -1,9 +1,20 @@
 {
     "0": {
         "actions": {
-            "var_nervous_habit": "rubbing his fingers together"
+            "var_nervous_habit": "fidgeting with his jacket zipper"
         },
         "comments": [],
+        "conditionals": {
+            "_cond_text_0": {
+                "conditions": {
+                    "partner": {
+                        "type": "is",
+                        "val": "sam"
+                    }
+                },
+                "text": "\nCome on, Sam's already inside."
+            }
+        },
         "cycles": {
             "_cycle_subject": [
                 {
@@ -56,11 +67,12 @@
         ],
         "showOnce": 0,
         "speaker": "",
-        "text": "He was having trouble in _cycle_subject.\nYou remember you bought him an organizer as a sort of light intervention. _cycle_workstyle.\nSorry, he'd say, $var_nervous_habit."
+        "text": "He was having trouble in _cycle_subject.\nYou remember you bought him an organizer as a sort of light intervention. _cycle_workstyle.\nSorry, he'd said, $var_nervous_habit. _cond_text_0"
     },
     "1": {
         "actions": {},
         "comments": [],
+        "conditionals": {},
         "cycles": {},
         "id": 1,
         "responses": [

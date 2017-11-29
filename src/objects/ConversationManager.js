@@ -141,7 +141,7 @@ export default class ConversationManager {
     return this._conversation[this._idx]['actions'];
   }
 
-  takeActions() {
+  takeActions(player = {}) {
     if (this._conversation === null) {
       return;
     }
@@ -151,30 +151,30 @@ export default class ConversationManager {
     }
 
     for (const action in this._conversation[this._idx]['actions']) {
-      this.takeAction(this._game, action, this._conversation[this._idx]['actions'][action]);
+      this.takeAction(player, action, this._conversation[this._idx]['actions'][action]);
     }
     return;
   }
 
-  takeAction(game, action, value) {
+  takeAction(player = {}, action, value) {
     if (action.startsWith('var')) {
-      const variable = action.substring(3);
+      const variable = action;
       if (value.startsWith('!')) {
-        delete game.player.variables[variable]; //remove variable from
+        delete player.variables[variable]; //remove variable from
       } else {
-        game.player.variables[variable] = value;  //set variable on player
+        player.variables[variable] = value;  //set variable on player
       }
     } else if (action.startsWith('inv')) {
       const item = action.substring(3);
       if (value.startsWith('!')) {
-        if (!(item in game.player.inventory)) {
-          const index = game.player.inventory.indexOf(item);
+        if (!(item in player.inventory)) {
+          const index = player.inventory.indexOf(item);
           if (index > -1) {
-            game.player.inventory.splice(index, 1); //remove item from player inventory
+            player.inventory.splice(index, 1); //remove item from player inventory
           }
         }
       } else {
-        game.player.inventory.push(item); //add item to player inventory
+        player.inventory.push(item); //add item to player inventory
       }
     } else if (action === 'custom') {
       this.customActions.customAction(value);

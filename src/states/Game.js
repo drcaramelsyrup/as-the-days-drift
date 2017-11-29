@@ -40,7 +40,7 @@ export default class Game extends Phaser.State {
     const conversation = convoManager.loadJSONConversation('output_cyclinglink');
     player.cyclingLinks = convoManager.startCyclingLinkMap(player, conversation, 0);
 
-    convoManager.takeActions();
+    convoManager.takeActions(player);
     dialoguePanel.show();
 
     const display = (game, player, conversation, index, colorMap = {}) => {

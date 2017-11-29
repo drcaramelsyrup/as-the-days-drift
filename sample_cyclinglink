@@ -6,13 +6,26 @@ Test
 
 
 
+
+
 :: UserStylesheet[stylesheet]
 
 
 
 
+
+
 :: sample
-He was having trouble in _cycle_subject. You remember you bought him an organizer as a sort of light intervention. _cycle_workstyle.
+(set: $var_nervous_habit = 'fidgeting with his jacket zipper')
+He was having trouble in _cycle_subject.
+
+
+You remember you bought him an organizer as a sort of light intervention. _cycle_workstyle.
+
+
+Sorry, he'd said, $var_nervous_habit. (if: $partner is sam)[
+
+Come on, Sam's already inside.]
 
 [[And then]]
 
@@ -20,7 +33,7 @@ He was having trouble in _cycle_subject. You remember you bought him an organize
 (link: "oblivious_option")[(set: $prospective += 2)(set: $passive += 1)(replace: "_cycle_workstyle")[He'd still forget his homework at your house, a collection of unintelligible scribbles, and then forget to pick it up the next day]]
 (if: $neuroticism > 5)[(link: "organized_option")[(set: $resolute += 2)(replace: "_cycle_workstyle")[Oftentimes he'd force himself to write in it. When that didn't work, he'd tear out pages and stick them to his doorway. Each time you came over to his place, he'd mutter a barely audible apology and quickly rip off the old collage of papers]]]
 (link: "math")[(set: $career to engineer)(replace: "_cycle_subject")[precalculus, which was a problem since he wanted to be a civil engineer. You told him at this rate he'd only be building the sort of bridges that'd be in the front page of the papers, for all the wrong reasons]]
-(link: "english")[(set: $career to journalist)(replace: "_cycle_subject")[English lit, which was a problem for his budding interest in journalism.]]
+(link: "english")[(set: $career to journalist)(replace: "_cycle_subject")[English lit, which was a problem for his budding interest in journalism]]
 (link: "science")[(set: $career to biologist)(replace: "_cycle_subject")[chemistry, which was a problem for an aspiring biologist]]
 <!--END_CYCLE-->
 

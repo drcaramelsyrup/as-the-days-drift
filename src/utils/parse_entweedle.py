@@ -21,6 +21,35 @@ main_speaker = ""	#default speaker - any nodes without speaker tag are assumed t
 
 titlesToIds = {}	#for changing node titles to indices
 
+def processActionValue(line, action_value):
+	if action_value.startswith('\'') or action_value.startswith('\"'):
+		quote = action_value[0]
+		return line[line.find(quote)+1:line.rfind(quote)]
+	return action_value
+
+def parseCondition(line):
+	ret = {}
+	if line.startswith("(if:"):
+		conds = [s.strip() for s in re.split(r'and', line[:line.find(')')]) if len(s) > 0]
+		for cond in conds:
+			cond_elements = [x for x in re.split(r'[\$ ]', cond) if len(x) > 0]
+			cond_var = cond_elements[1]
+			cond_type = cond_elements[2]
+			cond_val = cond_elements[3]
+
+			ret[cond_var] = {}
+			ret[cond_var]['type'] = cond_type
+			ret[cond_var]['val'] = cond_val
+	return ret
+
+def parseConditionText(line, cond_id):
+	conds = parseCondition(line)
+	cond_text_id = '_cond_text_' + str(cond_id)
+	cond_text = {}
+	cond_text['conditions'] = conds
+	cond_text['text'] = line[line.find('[')+1:line.rfind(']')]
+	return (cond_text_id, cond_text)
+
 def createConvNode(node, id):
 	node_title_split = re.split(r'[\[\]]', node[0])
 
@@ -37,9 +66,13 @@ def createConvNode(node, id):
 	node_responses = []
 	comments = []
 	actions = {}
+	cond_texts = {}
 	cycles = {}
-	showOnce = 0;
-	cycle = 0;
+	showOnce = 0
+	cycle = 0
+	conditional = 0
+	cond_str = ''
+	cond_id = 0			#condition id number, increments after each use
 
 	# go through node line by line
 	for line in node[1:]:
@@ -52,16 +85,7 @@ def createConvNode(node, id):
 				new_cycle = {}
 				# this is a condition
 				if line.startswith("(if:"):
-					conds = [s.strip() for s in re.split(r'and', line[:line.find(')')]) if len(s) > 0]
-					new_cycle['conditions'] = {}
-					for cond in conds:
-						cond_elements = [x for x in re.split(r'[\$ ]', cond) if len(x) > 0]
-						cond_var = cond_elements[1]
-						cond_type = cond_elements[2]
-						cond_val = cond_elements[3]
-						new_cycle['conditions'][cond_var] = {}
-						new_cycle['conditions'][cond_var]['type'] = cond_type
-						new_cycle['conditions'][cond_var]['val'] = cond_val
+					new_cycle['conditions'] = parseCondition(line)
 				# this is a quality setting substring(s)
 				set_strs = [s for s in re.split(r'\(set:', line) if len(s) > 0]
 				new_cycle['actions'] = {}
@@ -69,7 +93,7 @@ def createConvNode(node, id):
 					action = [x for x in re.split(r'[\$) ]', s) if len(x) > 0]
 					action_variable = action[0]
 					action_value = action[2]
-					new_cycle['actions'][action_variable] = action_value
+					new_cycle['actions'][action_variable] = processActionValue(s, action_value)
 				# replace Twine macro determines our id
 				replace_str = [x for x in re.split('\"', line[line.find("(replace:") + len("(replace:"):]) if len(x) > 0]
 				cycle_id = replace_str[1]
@@ -81,6 +105,31 @@ def createConvNode(node, id):
 					cycles[cycle_id] = []
 				# add created cycle object
 				cycles[cycle_id].append(new_cycle)
+				continue
+		# if we are in a conditional text block
+		if conditional > 0 or line.find('(if:') >= 0 and not line.endswith(']]]'):
+			cond_index = 0
+			if line.find('(if:') > 0:
+				cond_index = line.find('(if:')
+			# termination of conditional text block
+			if line.find(']', cond_index) > 0:
+				end_index = line.find(']', cond_index)+1
+				cond_str = cond_str + line[cond_index:end_index]
+				actual_cond_id, cond_text = parseConditionText(cond_str, cond_id)
+				cond_texts[actual_cond_id] = cond_text
+				line = line[:cond_index] + actual_cond_id + line[end_index:]
+				node_text = node_text + line + '\n'
+				# reset
+				conditional = 0
+				cond_str = ''
+				cond_id += 1
+				continue
+			# this conditional block extends more than one line
+			else:
+				conditional = 1
+				cond_str = cond_str + line[cond_index:] + '\n'
+				if cond_index != 0:
+					node_text = node_text + line[:cond_index]
 				continue
 		# this is a response line
 		if line.startswith("[[") and line.endswith("]]"):
@@ -109,9 +158,9 @@ def createConvNode(node, id):
 			action = [x for x in re.split(r'[\$) ]', line) if len(x) > 0]
 			action_variable = action[1]
 			action_value = action[3]
-			actions[action_variable] = action_value
-		# this line checks for a variable
-		elif line.startswith("(if:"):
+			actions[action_variable] = processActionValue(line, action_value)
+		# this line checks for a condition and response
+		elif line.startswith("(if:") and line.endswith(']]]'):
 			cond_and_response = re.split(r'\)\[\[\[', line)
 			response = cond_and_response[1][:-3]
 			conds = [x.strip() for x in re.split(r'and', cond_and_response[0][5:])]
@@ -129,6 +178,8 @@ def createConvNode(node, id):
 				node_responses.append({'text': response[0], 'target': response[0], 'conditions': conditions})
 			else:
 				node_responses.append({'text': response[0], 'target': response[1], 'conditions': conditions})
+		
+
 		# this line is part of the text for this node
 		elif line[0] != '{' and line[0] != '}':
 			node_text = node_text + line + '\n'
@@ -149,7 +200,8 @@ def createConvNode(node, id):
 		'actions': actions,
 		'speaker': speaker,
 		'showOnce': showOnce,
-		'cycles': cycles
+		'cycles': cycles,
+		'conditionals': cond_texts
 	}
 
 conv_dict['start'] = createConvNode(conv_nodes[0], 0)	# this is the NPC greeting and conversation root
