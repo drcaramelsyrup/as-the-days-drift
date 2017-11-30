@@ -1,20 +1,21 @@
 {
     "0": {
         "actions": {
-            "var_nervous_habit": "fidgeting with his jacket zipper"
+            "var_nervous_habit": "fidgeting with his jacket zipper",
         },
         "comments": [],
-        "conditionals": {
-            "_cond_text_0": {
+        "conditionals": [
+            {
                 "conditions": {
-                    "partner": {
+                    "var_nervous_habit": {
                         "type": "is",
-                        "val": "sam"
+                        "val": "fidgeting with his jacket zipper"
                     }
                 },
+                "id": "_cond_text_0",
                 "text": "\nCome on, Sam's already inside."
             }
-        },
+        ],
         "cycles": {
             "_cycle_subject": [
                 {
@@ -72,7 +73,7 @@
     "1": {
         "actions": {},
         "comments": [],
-        "conditionals": {},
+        "conditionals": [],
         "cycles": {},
         "id": 1,
         "responses": [

@@ -41,8 +41,17 @@ export default class ConversationManager {
 
   getTextForNode(conversation = {}, index = 0, variables = {}) {
     const raw = this.getRawTextForNode(conversation, index);
+    const withConditionals = conversation[index].hasOwnProperty('conditionals')
+      ? conversation[index].conditionals.reduce((acc, conditional) => {
+        if (this.checkConditions(conditional.conditions, variables)) {
+          return acc.replace(conditional.id, conditional.text);
+        }
+        return acc.replace(conditional.id, '');
+      }, raw)
+      : raw;
+    
     // '$' character denotes a variable
-    return raw.replace(/\$\w+/, (match) => {
+    return withConditionals.replace(/\$\w+/, (match) => {
       if (match.length > 0 && variables.hasOwnProperty(match.slice(1)))
         return variables[match.slice(1)];
       return match;
@@ -137,8 +146,8 @@ export default class ConversationManager {
     return false;
   }
 
-  getActions() {
-    return this._conversation[this._idx]['actions'];
+  getActions(conversation = {}, index = 0) {
+    return conversation[index]['actions'];
   }
 
   takeActions(player = {}) {
@@ -196,12 +205,14 @@ export default class ConversationManager {
   nextValidCycleLinkIndex(player = {}, conversation = {}, index = 0, id = '', startCycleIdx = -1) {
     const cycles = conversation[index]['cycles'][id];
     for (let i = startCycleIdx + 1; i < cycles.length; i++) {
-      if (this.checkCycleCondition(cycles[i], player)) {
+      if (!cycles[i].hasOwnProperty('conditions') 
+        || this.checkConditions(cycles[i]['conditions'], player.variables)) {
         return i;
       }
     }
     for (let j = 0; j < startCycleIdx; j++) {
-      if (this.checkCycleCondition(cycles[j], player))
+      if (!cycles[j].hasOwnProperty('conditions')
+        || this.checkConditions(cycles[j]['conditions'], player.variables))
         return j;
     }
     return -1;
@@ -212,15 +223,12 @@ export default class ConversationManager {
     return nextLinkIdx < 0 ? {} : conversation[index]['cycles'][id][nextLinkIdx];
   }
 
-  checkCycleCondition(cycle = {}, player = {}) {
-    if (!('conditions' in cycle))
-      return true;
-    const conditions = cycle['conditions'];
+  checkConditions(conditions = {}, variables = {}) {
     for (const variable in conditions) {
       // parse type
       let isFulfilled = false;
-      if (variable in player.variables) {
-        const playerVal = player.variables[variable];
+      if (variables.hasOwnProperty(variable)) {
+        const playerVal = variables[variable];
         const val = conditions[variable]['val'];
         const type = conditions[variable]['type'];
         switch (type) {

@@ -38,22 +38,26 @@ export default class Game extends Phaser.State {
     const player = new Player();
 
     const conversation = convoManager.loadJSONConversation('output_cyclinglink');
-    player.cyclingLinks = convoManager.startCyclingLinkMap(player, conversation, 0);
 
-    convoManager.takeActions(player);
-    dialoguePanel.show();
+    player.cyclingLinks = convoManager.startCyclingLinkMap(player, conversation, 0);
+    player.variables = convoManager.mergeQualities(player.variables, convoManager.getActions(conversation, 0));
 
     const display = (game, player, conversation, index, colorMap = {}) => {
+      
       dialoguePanel.clean();
       dialoguePanel.displayWrappables(
         makeWrappables(game, player, conversation, index, colorMap)
       );
+
+      const onResponse = (target) => {
+        player.variables = convoManager.mergeQualities(player.variables, 
+            convoManager.getActions(conversation, target));
+        player.variables = convoManager.mergeQualities(player.variables, player.pending);
+        display(game, player, conversation, target);
+      };
+
       dialoguePanel.displayResponses(
-        convoManager.getResponsesForNode(conversation, index),
-        (target) => {
-          player.variables = convoManager.mergeQualities(player.variables, player.pending);
-          display(game, player, conversation, target);
-        }
+        convoManager.getResponsesForNode(conversation, index), onResponse
       );
     };
 

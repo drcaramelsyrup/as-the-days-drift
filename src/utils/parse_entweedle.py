@@ -44,11 +44,11 @@ def parseCondition(line):
 
 def parseConditionText(line, cond_id):
 	conds = parseCondition(line)
-	cond_text_id = '_cond_text_' + str(cond_id)
 	cond_text = {}
+	cond_text['id'] = '_cond_text_' + str(cond_id)
 	cond_text['conditions'] = conds
 	cond_text['text'] = line[line.find('[')+1:line.rfind(']')]
-	return (cond_text_id, cond_text)
+	return cond_text
 
 def createConvNode(node, id):
 	node_title_split = re.split(r'[\[\]]', node[0])
@@ -66,7 +66,7 @@ def createConvNode(node, id):
 	node_responses = []
 	comments = []
 	actions = {}
-	cond_texts = {}
+	cond_texts = []
 	cycles = {}
 	showOnce = 0
 	cycle = 0
@@ -115,9 +115,9 @@ def createConvNode(node, id):
 			if line.find(']', cond_index) > 0:
 				end_index = line.find(']', cond_index)+1
 				cond_str = cond_str + line[cond_index:end_index]
-				actual_cond_id, cond_text = parseConditionText(cond_str, cond_id)
-				cond_texts[actual_cond_id] = cond_text
-				line = line[:cond_index] + actual_cond_id + line[end_index:]
+				cond_text = parseConditionText(cond_str, cond_id)
+				cond_texts.append(cond_text)
+				line = line[:cond_index] + cond_text['id'] + line[end_index:]
 				node_text = node_text + line + '\n'
 				# reset
 				conditional = 0
