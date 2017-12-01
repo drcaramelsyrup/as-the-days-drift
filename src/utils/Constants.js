@@ -22,5 +22,6 @@ export default class Constants {
   /* DynamicTextElement constants */
   static get DYN_TEXT_TWEENTIME() { return Phaser.Timer.HALF; }
   static get DYN_TEXT_TWEENSTEPS() { return 30; }
-  
+  static get LINE_SPACING() { return 15; }
+
 }

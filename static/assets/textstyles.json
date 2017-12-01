@@ -1,38 +1,38 @@
 {
 	"speaker": {
-		"font": "20px Cinzel Decorative", 
+		"font": "20px Neuton", 
 		"fill": "#48f2ff", 
 		"wordWrap": false, 
 		"align": "left"
 	},
 	"dialogueBody": {
-		"font": "36px Open Sans", 
-		"fill": "#48f2ff", 
-		"wordWrap": true, 
+		"font": "36px Neuton", 
+		"fill": "#ffffff", 
+		"wordWrap": true,
 		//"wordWrapWidth": "this._dialogTextWidth",
 		"align": "left"
 	},
 	"choiceButton": {
-		"font": "36px Open Sans",
+		"font": "36px Neuton",
 		"fill": "#48f2ff", 
 		"wordWrap": true,
 		//"wordWrapWidth": this._dialogTextWidth - buttonSidePadding, 
 		"align": "left"
 	},
 	"toast": {
-		"font": "14px Open Sans",
+		"font": "14px Neuton",
 		"fill": "#48f2ff",
 		"boundsAlignH": "center"
 	},
 	"mainMenuTitle": {
-		"font": "124px Cinzel Decorative",
+		"font": "124px Neuton",
 		"fontWeight": "bold",
-		"fill": "#42dff4",
+		"fill": "#ffffff",
 		"align": "center"
 	},
 	"mainMenuH1": {
-		"font": "96px Cinzel Decorative",
-		"fill": "#42dff4",
+		"font": "96px Neuton",
+		"fill": "#ffffff",
 		"align": "center"		
 	},
 	"mainMenuH1_over": {

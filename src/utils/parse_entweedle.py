@@ -13,7 +13,7 @@ source_file = open(args.source, 'r')
 source_raw = source_file.read()
 source_file.close()
 
-source_nodes = [re.split(r'[\n]+', x) for x in re.split(':: ', source_raw) if len(x) > 0]
+source_nodes = [re.split(r'(\n)', x) for x in re.split(':: ', source_raw) if len(x) > 0]
 conv_title = source_nodes[0][1]	#title of conversation - not actually used
 conv_nodes = source_nodes[3:]
 conv_dict = {}		#map of node title -> node info
@@ -118,7 +118,7 @@ def createConvNode(node, id):
 				cond_text = parseConditionText(cond_str, cond_id)
 				cond_texts.append(cond_text)
 				line = line[:cond_index] + cond_text['id'] + line[end_index:]
-				node_text = node_text + line + '\n'
+				node_text = node_text + line
 				# reset
 				conditional = 0
 				cond_str = ''
@@ -127,7 +127,7 @@ def createConvNode(node, id):
 			# this conditional block extends more than one line
 			else:
 				conditional = 1
-				cond_str = cond_str + line[cond_index:] + '\n'
+				cond_str = cond_str + line[cond_index:]
 				if cond_index != 0:
 					node_text = node_text + line[:cond_index]
 				continue
@@ -182,7 +182,7 @@ def createConvNode(node, id):
 
 		# this line is part of the text for this node
 		elif line[0] != '{' and line[0] != '}':
-			node_text = node_text + line + '\n'
+			node_text = node_text + line
 
 	# if there are no responses to this node, make it an end node
 	if len(node_responses) == 0:

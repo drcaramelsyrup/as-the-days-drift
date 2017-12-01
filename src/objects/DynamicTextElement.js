@@ -51,7 +51,7 @@ export default class DynamicTextElement {
 
     let nextX = start.x;
     let nextY = start.y;
-    let fontHeight = parseInt(style.font) + toMeasure.padding.y;
+    let fontHeight = parseInt(style.font) + toMeasure.padding.y + Constants.LINE_SPACING;
 
     if (style.wordWrapWidth <= 0)
       return;
