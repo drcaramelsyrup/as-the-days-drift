@@ -13,7 +13,17 @@
                     }
                 },
                 "id": "_cond_text_0",
-                "text": "\n\nCome on, Sam's already inside."
+                "text": "\n\nCome on, Sam's already inside. "
+            },
+            {
+                "conditions": {
+                    "var_nervous_habit": {
+                        "type": "is",
+                        "val": "'fidgeting"
+                    }
+                },
+                "id": "_cond_text_1",
+                "text": "He continued to fidget."
             }
         ],
         "cycles": {
@@ -68,7 +78,7 @@
         ],
         "showOnce": 0,
         "speaker": "",
-        "text": "He was having trouble in _cycle_subject.\n\nYou remember you bought him an organizer as a sort of light intervention. _cycle_workstyle.\n\nSorry, he'd said, $var_nervous_habit. _cond_text_0"
+        "text": "He was having trouble in _cycle_subject.\n\nYou remember you bought him an organizer as a sort of light intervention. _cycle_workstyle.\n\nSorry, he'd said, $var_nervous_habit."
     },
     "1": {
         "actions": {},

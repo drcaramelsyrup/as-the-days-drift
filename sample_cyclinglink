@@ -8,7 +8,9 @@ Test
 
 
 
+
 :: UserStylesheet[stylesheet]
+
 
 
 
@@ -23,7 +25,7 @@ You remember you bought him an organizer as a sort of light intervention. _cycle
 
 Sorry, he'd said, $var_nervous_habit. (if: $partner is sam)[
 
-Come on, Sam's already inside.]
+Come on, Sam's already inside. (if: $var_nervous_habit is 'fidgeting with his jacket zipper')[He continued to fidget.]]
 [[And then]]
 <!--CYCLE-->
 (link: "oblivious_option")[(set: $prospective += 2)(set: $passive += 1)(replace: "_cycle_workstyle")[He'd still forget his homework at your house, a collection of unintelligible scribbles, and then forget to pick it up the next day]]

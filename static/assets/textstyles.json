@@ -1,37 +1,37 @@
 {
 	"speaker": {
-		"font": "20px Neuton", 
+		"font": "20px Ovo", 
 		"fill": "#48f2ff", 
 		"wordWrap": false, 
 		"align": "left"
 	},
 	"dialogueBody": {
-		"font": "36px Neuton", 
+		"font": "36px Ovo", 
 		"fill": "#ffffff", 
 		"wordWrap": true,
 		//"wordWrapWidth": "this._dialogTextWidth",
 		"align": "left"
 	},
 	"choiceButton": {
-		"font": "36px Neuton",
+		"font": "36px Ovo",
 		"fill": "#48f2ff", 
 		"wordWrap": true,
 		//"wordWrapWidth": this._dialogTextWidth - buttonSidePadding, 
 		"align": "left"
 	},
 	"toast": {
-		"font": "14px Neuton",
+		"font": "14px Ovo",
 		"fill": "#48f2ff",
 		"boundsAlignH": "center"
 	},
 	"mainMenuTitle": {
-		"font": "124px Neuton",
+		"font": "124px Ovo",
 		"fontWeight": "bold",
 		"fill": "#ffffff",
 		"align": "center"
 	},
 	"mainMenuH1": {
-		"font": "96px Neuton",
+		"font": "96px Ovo",
 		"fill": "#ffffff",
 		"align": "center"		
 	},

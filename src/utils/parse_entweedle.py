@@ -42,12 +42,16 @@ def parseCondition(line):
 			ret[cond_var]['val'] = cond_val
 	return ret
 
+def makeConditionId(cond_id):
+	return '_cond_text_' + str(cond_id)
+
 def parseConditionText(line, cond_id):
 	conds = parseCondition(line)
 	cond_text = {}
-	cond_text['id'] = '_cond_text_' + str(cond_id)
+	cond_text['id'] = makeConditionId(cond_id)
 	cond_text['conditions'] = conds
-	cond_text['text'] = line[line.find('[')+1:line.rfind(']')]
+	cond_text['text'] = ''
+	# cond_text['text'] = line[line.find('[')+1:line.rfind(']')]
 	return cond_text
 
 def createConvNode(node, id):
@@ -73,6 +77,8 @@ def createConvNode(node, id):
 	conditional = 0
 	cond_str = ''
 	cond_id = 0			#condition id number, increments after each use
+
+	cond_stack = []
 
 	# go through node line by line
 	for line in node[1:]:
@@ -107,30 +113,44 @@ def createConvNode(node, id):
 				cycles[cycle_id].append(new_cycle)
 				continue
 		# if we are in a conditional text block
-		if conditional > 0 or line.find('(if:') >= 0 and not line.endswith(']]]'):
-			cond_index = 0
-			if line.find('(if:') > 0:
-				cond_index = line.find('(if:')
-			# termination of conditional text block
-			if line.find(']', cond_index) > 0:
-				end_index = line.find(']', cond_index)+1
-				cond_str = cond_str + line[cond_index:end_index]
-				cond_text = parseConditionText(cond_str, cond_id)
-				cond_texts.append(cond_text)
-				line = line[:cond_index] + cond_text['id'] + line[end_index:]
-				node_text = node_text + line
-				# reset
-				conditional = 0
-				cond_str = ''
-				cond_id += 1
-				continue
-			# this conditional block extends more than one line
-			else:
-				conditional = 1
-				cond_str = cond_str + line[cond_index:]
-				if cond_index != 0:
-					node_text = node_text + line[:cond_index]
-				continue
+		if len(cond_stack) > 0 or line.find('(if:') >= 0 and not line.endswith(']]]'):
+			segment = line
+
+			while len(segment) > 0:
+				cond_start = segment.find('(if:')
+				cond_end = segment.find(']')
+
+				if cond_start == 0:
+					cond_phrase_end = segment.find('[')+1
+					cond_text_element = parseConditionText(segment[:cond_phrase_end], cond_id)
+					cond_texts.append(cond_text_element)
+					cond_stack.append(cond_text_element)
+					cond_id += 1
+					segment = segment[cond_phrase_end:]
+					continue
+
+				if cond_end == 0:
+					cond_stack.pop()
+					segment = segment[1:]
+					continue
+
+				if cond_start >= 0 and cond_end >= 0:
+					text_end = min(cond_start, cond_end)
+				else:
+					text_end = max(cond_start, cond_end)
+				if text_end < 0:
+					text_end = len(segment)
+
+				if len(cond_stack) <= 0:
+					node_text += segment[:text_end]
+				else:
+					requested_element = cond_stack[-1]
+					requested_element['text'] += segment[:text_end]
+
+				segment = segment[text_end:]
+
+			continue
+
 		# this is a response line
 		if line.startswith("[[") and line.endswith("]]"):
 			response = re.split('->', line[2:-2])
